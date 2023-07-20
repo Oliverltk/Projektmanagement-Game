@@ -1,23 +1,37 @@
-@import url('https://fonts.googleapis.com/css?family=Muli&display=swap');
-@import url('https://fonts.googleapis.com/css?family=Quicksand&display=swap');
+@import url("https://fonts.googleapis.com/css?family=Muli&display=swap");
+@import url("https://fonts.googleapis.com/css?family=Quicksand&display=swap");
 body {
-  font-family: 'Muli', sans-serif;
+  font-family: "quicksand", sans-serif;
   color: rgba(0, 0, 0, 0.8);
   font-weight: 400;
   line-height: 1.58;
-  letter-spacing: -.003em;
-  font-size: 20px;
+  letter-spacing: -0.003em;
   padding: 70px;
 }
-
-/*
-h1 {
-  font-family: 'Quicksand', sans-serif;
-  font-weight: 700;
-  font-style: normal;
-  font-size: 38px;
-  line-height: 1.15;
-  letter-spacing: -.02em;
-  color: rgba(0, 0, 0, 0.8);
-  -webkit-font-smoothing: antialiased;
+.container {
+  margin: auto;
+  width: 50vh;
+  height: 50vh;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
+.button {
+  width: 350px;
+  height: 48px;
+  font-size: 24px;
+  border: 2px solid black;
+  border-radius: 6px;
+  background-color: white;
+  margin-bottom: 20px;
+  
+}
+#repository-link {
+  color: black;
+  text-decoration: none;
+}
+
+
+
