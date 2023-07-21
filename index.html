@@ -12,13 +12,13 @@
       rel="stylesheet"
       href="https://fonts.googleapis.com/icon?family=Material+Icons"
     />
-    <script src="main.js"></script>
+    <script type="module" src="main.js"></script>
     <title>Game</title>
   </head>
   <body>
     <div class="main-menu">
       <h1>Mensch ärgere dich nicht</h1>
-      <button class="button">
+      <button class="button" id="new">
         <i class="material-icons">add</i>&nbspSpiel starten
       </button>
       <button class="button">
@@ -33,7 +33,7 @@
         >
       </button>
     </div>
-    <div class="new-game">
+    <div class="new-game invisible">
       <h1>Spiel starten</h1>
       <select name="players" class="select-menu" id="player-amount">
         <option value="default" selected disabled hidden>Spieleranzahl</option>
@@ -41,18 +41,19 @@
         <option value="threeplayers">3 Spieler</option>
         <option value="fourplayers">4 Spieler</option>
       </select>
-      <button class="button">Virtueller Würfel</button>
+      <button class="button">
+        <label class="switch">
+          <md-switch></md-switch>
+         </label
+        >&nbsp;Virtueller Würfel
+      </button>
       <select name="eye-number" class="select-menu" id="start-number">
         <option value="default" selected disabled hidden>Augenzahl</option>
       </select>
     </div>
     <div class="main-game">
-      <main class="gameboard" id="gameboard">
-
-      </main>
-      <aside class="game-content">
-        
-      </aside>
+      <main class="gameboard" id="gameboard"></main>
+      <aside class="game-content"></aside>
     </div>
   </body>
 </html>
