@@ -4,16 +4,55 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="style.css" />
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Sofia">
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Sofia"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+    />
     <script src="main.js"></script>
     <title>Game</title>
   </head>
   <body>
-    <div class="container">
+    <div class="main-menu">
       <h1>Mensch ärgere dich nicht</h1>
-      <button class="button">Spiel starten</button>
-      <button class="button">Spielregeln</button>
-      <button class="button"><a target="_blank" id="repository-link" href="https://github.com/Oliverltk/Projektmanagement-Game">Repository</a></button>
+      <button class="button">
+        <i class="material-icons">add</i>&nbspSpiel starten
+      </button>
+      <button class="button">
+        <i class="material-icons">key</i>&nbspSpielregeln
+      </button>
+      <button class="button">
+        <i class="material-icons">link</i>&nbsp<a
+          target="_blank"
+          id="repository-link"
+          href="https://github.com/Oliverltk/Projektmanagement-Game"
+          >Repository</a
+        >
+      </button>
+    </div>
+    <div class="new-game">
+      <h1>Spiel starten</h1>
+      <select name="players" class="select-menu" id="player-amount">
+        <option value="default" selected disabled hidden>Spieleranzahl</option>
+        <option value="twoplayers">2 Spieler</option>
+        <option value="threeplayers">3 Spieler</option>
+        <option value="fourplayers">4 Spieler</option>
+      </select>
+      <button class="button">Virtueller Würfel</button>
+      <select name="eye-number" class="select-menu" id="start-number">
+        <option value="default" selected disabled hidden>Augenzahl</option>
+      </select>
+    </div>
+    <div class="main-game">
+      <main class="gameboard" id="gameboard">
+
+      </main>
+      <aside class="game-content">
+        
+      </aside>
     </div>
   </body>
 </html>
