@@ -18,10 +18,10 @@
   <body>
     <div class="main-menu">
       <h1>Mensch ärgere dich nicht</h1>
-      <button class="button" id="new">
+      <button class="button" id="new-btn">
         <i class="material-icons">add</i>&nbspSpiel starten
       </button>
-      <button class="button">
+      <button class="button" id="gamerules-btn">
         <i class="material-icons">key</i>&nbspSpielregeln
       </button>
       <button class="button">
@@ -42,16 +42,16 @@
         <option value="fourplayers">4 Spieler</option>
       </select>
       <button class="button">
-        <label class="switch">
-          <md-switch></md-switch>
-         </label
-        >&nbsp;Virtueller Würfel
+        <label class="switch"> <md-switch></md-switch> </label>&nbsp;Virtueller
+        Würfel
       </button>
       <select name="eye-number" class="select-menu" id="start-number">
         <option value="default" selected disabled hidden>Augenzahl</option>
       </select>
+      <button class="button" id="gamestart-btn">Spiel starten</button>
     </div>
-    <div class="main-game">
+    <div class="game-rules invisible" id="gamerules"></div>
+    <div class="main-game invisible" id="main-game">
       <main class="gameboard" id="gameboard"></main>
       <aside class="game-content"></aside>
     </div>
