@@ -14,6 +14,12 @@ newgame.addEventListener("click", () => {
   showpage("new-game");
   history.pushState({ page: "new-game" }, "");
 });
+newgame.addEventListener("click", () => {   //einfügen und färben der Spielfelder
+  //gameboardCSS.appendChild(createCell(2,2));
+  createGamefield();
+  const array=createArray();
+  console.log(array[1].id);
+});
 const gamerules = document.getElementById("gamerules-btn");
 gamerules.addEventListener("click", () => {
   showpage("game-rules");
@@ -34,6 +40,82 @@ function showpage(page) {
     .querySelectorAll("body > div")
     .forEach((element) => element.classList.add("invisible"));
   document.querySelector("." + page).classList.remove("invisible");
+}
+function createCell(row,column){
+      let cell = document.createElement("div");
+      cell.style.borderRadius= "50%";
+      cell.style.gridRow=row;
+      cell.style.gridColumn=column;
+      cell.style.borderColor="black";
+      cell.style.borderWidth="1px";
+      cell.style.borderStyle="solid";
+      cell.style.backgroundColor="lightgrey";
+      cell.id=column+"cell"+row; //zuerst die X-Achse dann die Y-Achse
+      console.log(cell.id);
+      return cell;
+}
+function createGamefield(){
+  
+   for (let y=1; y<12;y++){ //column bzw Spalte |
+      for (let x=1;x<12;x++){ //row bzw Zeile ------
+          if(y==1 || y==2 || y==10 || y==11){
+            if(x==1 || x==2 || x==5 || x==6 || x==7 || x==10 || x==11){
+              gameboardCSS.appendChild(createCell(x,y));
+            }
+          }
+          if(y==4 || y==3 || y==8 || y==9){
+            if(x==5 || x==6 || x==7){
+              gameboardCSS.appendChild(createCell(x,y));
+            }
+          }
+          if(y==5 || y==6 || y==7){
+            if(y==6 && x==6){
+                //laesst exakt die Mitte aus by doing nothin
+            } else {
+              gameboardCSS.appendChild(createCell(x,y));
+            }
+          }
+
+      }
+   }
+   document.getElementById("1cell1").style.backgroundColor="blue";
+   document.getElementById("1cell2").style.backgroundColor="blue";
+   document.getElementById("2cell1").style.backgroundColor="blue";
+   document.getElementById("2cell2").style.backgroundColor="blue";
+   document.getElementById("5cell1").style.backgroundColor="blue";
+   for(let i=2;i<6;i++){
+    document.getElementById("6cell"+i).style.backgroundColor="#6495ed"; //Corn Flower Blue
+   }
+   document.getElementById("10cell1").style.backgroundColor="yellow";
+   document.getElementById("11cell2").style.backgroundColor="yellow";
+   document.getElementById("10cell2").style.backgroundColor="yellow";
+   document.getElementById("11cell1").style.backgroundColor="yellow";
+   document.getElementById("11cell5").style.backgroundColor="yellow";
+   for(let i=7;i<11;i++){
+    document.getElementById(i+"cell6").style.backgroundColor="#fcf75e"; //Icetrine
+   }
+   document.getElementById("1cell10").style.backgroundColor="red";
+   document.getElementById("2cell10").style.backgroundColor="red";
+   document.getElementById("1cell11").style.backgroundColor="red";
+   document.getElementById("2cell11").style.backgroundColor="red";
+   document.getElementById("1cell7").style.backgroundColor="red";
+   for(let i=2;i<6;i++){
+    document.getElementById(i+"cell6").style.backgroundColor="#fa8072"; //Tomato
+   }
+   document.getElementById("10cell10").style.backgroundColor="green";
+   document.getElementById("11cell10").style.backgroundColor="green";
+   document.getElementById("10cell11").style.backgroundColor="green";
+   document.getElementById("11cell11").style.backgroundColor="green";
+   document.getElementById("7cell11").style.backgroundColor="green";
+   for(let i=7;i<11;i++){
+    document.getElementById("6cell"+i).style.backgroundColor="#90ee90"; //Lightgreen
+   }
+}
+function createArray(){
+  const felder =[];
+  felder[0]=document.getElementById("5cell1");
+  felder[1]=document.getElementById("6cell1");
+  return felder;
 }
 //Adding content to gamerules
 

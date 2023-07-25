@@ -55,3 +55,26 @@ body {
 :root {
   --md-sys-color-primary: black;
 }
+#gameboard{
+  width: 46vw;
+  border: 0.5vw solid black;
+}
+#gameboardCSS{
+  height: 45vw;
+  width: 45vw;
+  border: 0.5vw solid white;
+  display: grid;
+  grid-template-columns: repeat(11, 1fr);
+  grid-template-rows:  repeat(11, 1fr);
+  grid-column-gap: 0.5vw;
+  grid-row-gap: 0.5vw;
+}
+#cell{
+  border-radius: 50%;
+  border-color: red;
+  border-width: 10px;
+  border-style: solid;
+  background-color: gray;
+  grid-row:1;
+  grid-column: 1;
+}
