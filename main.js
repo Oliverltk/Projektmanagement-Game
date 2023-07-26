@@ -126,10 +126,48 @@ function createGamefield(){
    }
    
 }
-function createArray(){
+function createArray(){  //wird später für die Zug Reihenfolge benötigt
   const felder =[];
-  felder[0]=document.getElementById("5cell1");
+  felder[0]=document.getElementById("5cell1"); //Start beim blauen Feld
   felder[1]=document.getElementById("6cell1");
+  felder[2]=document.getElementById("7cell1");
+  felder[3]=document.getElementById("7cell2");
+  felder[4]=document.getElementById("7cell3");
+  felder[5]=document.getElementById("7cell4");
+  felder[6]=document.getElementById("7cell5");
+  felder[7]=document.getElementById("8cell5");
+  felder[8]=document.getElementById("9cell5");
+  felder[9]=document.getElementById("10cell5");
+  felder[10]=document.getElementById("11cell5"); //gelbes Startfeld !!!
+  felder[11]=document.getElementById("11cell6");
+  felder[12]=document.getElementById("11cell7");
+  felder[13]=document.getElementById("10cell7");
+  felder[14]=document.getElementById("9cell7");
+  felder[15]=document.getElementById("8cell7");
+  felder[16]=document.getElementById("7cell7");
+  felder[17]=document.getElementById("7cell8");
+  felder[18]=document.getElementById("7cell9");
+  felder[19]=document.getElementById("7cell10");
+  felder[20]=document.getElementById("7cell11"); //grünes Startfeld !!!
+  felder[21]=document.getElementById("6cell11");
+  felder[22]=document.getElementById("5cell11");
+  felder[23]=document.getElementById("5cell10");
+  felder[24]=document.getElementById("5cell9");
+  felder[25]=document.getElementById("5cell8");
+  felder[26]=document.getElementById("5cell7");
+  felder[27]=document.getElementById("4cell7");
+  felder[28]=document.getElementById("3cell7");
+  felder[29]=document.getElementById("2cell7");
+  felder[30]=document.getElementById("1cell7"); //rotes Startfeld !!!
+  felder[31]=document.getElementById("1cell6");
+  felder[32]=document.getElementById("1cell5");
+  felder[33]=document.getElementById("2cell5");
+  felder[34]=document.getElementById("3cell5");
+  felder[35]=document.getElementById("4cell5");
+  felder[36]=document.getElementById("5cell5");
+  felder[37]=document.getElementById("5cell4");
+  felder[38]=document.getElementById("5cell3");
+  felder[39]=document.getElementById("5cell2");
   return felder;
 }
 //Adding content to gamerules
