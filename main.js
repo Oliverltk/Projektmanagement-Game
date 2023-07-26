@@ -50,8 +50,26 @@ function createCell(row,column){
       console.log(cell.id);
       return cell;
 }
+function createArrow(column,row,x,y,html){
+  let arrow = document.createElement("div");
+  arrow.style.display="flex";
+  arrow.style.justifyContent=x;
+  arrow.style.alignItems=y;
+  arrow.style.gridRow=row;
+  arrow.style.gridColumn=column;
+  arrow.style.fontSize="x-large";
+  arrow.innerHTML=html;
+  return arrow;
+}
 function createGamefield(){
-  
+  gameboardCSS.appendChild(createArrow(9,8,"center","flex-start","&#8592;")); //arrow Left
+  gameboardCSS.appendChild(createArrow(3,8,"center","flex-start","&#8592;")); 
+  gameboardCSS.appendChild(createArrow(9,4,"center","flex-end","&#8594;")); //arrow Right
+  gameboardCSS.appendChild(createArrow(3,4,"center","flex-end","&#8594;"));
+  gameboardCSS.appendChild(createArrow(8,9,"flex-start","center","&#8595;")); //arrow down
+  gameboardCSS.appendChild(createArrow(8,3,"flex-start","center","&#8595;")); 
+  gameboardCSS.appendChild(createArrow(4,3,"flex-end","center","&#8593;")); //arrow Up
+  gameboardCSS.appendChild(createArrow(4,9,"flex-end","center","&#8593;"));
    for (let y=1; y<12;y++){ //column bzw Spalte |
       for (let x=1;x<12;x++){ //row bzw Zeile ------
           if(y==1 || y==2 || y==10 || y==11){
@@ -106,6 +124,7 @@ function createGamefield(){
    for(let i=7;i<11;i++){
     document.getElementById("6cell"+i).style.backgroundColor="#90ee90"; //Lightgreen
    }
+   
 }
 function createArray(){
   const felder =[];
