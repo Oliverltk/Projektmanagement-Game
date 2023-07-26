@@ -43,13 +43,9 @@ function showpage(page) {
 }
 function createCell(row,column){
       let cell = document.createElement("div");
-      cell.style.borderRadius= "50%";
+      cell.classList.add("createdcell");
       cell.style.gridRow=row;
       cell.style.gridColumn=column;
-      cell.style.borderColor="black";
-      cell.style.borderWidth="1px";
-      cell.style.borderStyle="solid";
-      cell.style.backgroundColor="lightgrey";
       cell.id=column+"cell"+row; //zuerst die X-Achse dann die Y-Achse
       console.log(cell.id);
       return cell;

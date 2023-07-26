@@ -78,3 +78,8 @@ body {
   grid-row:1;
   grid-column: 1;
 }
+.createdcell {
+  border-radius: 50%;
+  border: 1px solid black;
+  background-color: lightgrey;
+}
