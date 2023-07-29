@@ -51,6 +51,15 @@ function createCell(row, column) {
   console.log(cell.id);
   return cell;
 }
+function createplayers(row,column){
+  let cell = document.createElement("div");
+  cell.style.gridRow=row;
+  cell.style.gridColumn=column;
+  cell.id=column+"figur"+row; //zuerst die X-Achse dann die Y-Achse
+  cell.innerText="Spielfigur";
+  console.log(cell.id);
+  return cell;
+}
 function createArrow(column, row, x, y, html) {
   let arrow = document.createElement("div");
   arrow.style.display = "flex";
