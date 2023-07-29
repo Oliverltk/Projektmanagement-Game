@@ -37,11 +37,11 @@
       <h1>Spiel starten</h1>
       <select name="players" class="select-menu" id="player-amount">
         <option value="default" selected disabled hidden>Spieleranzahl</option>
-        <option value="twoplayers">2 Spieler</option>
-        <option value="threeplayers">3 Spieler</option>
-        <option value="fourplayers">4 Spieler</option>
+        <option value="2">2 Spieler</option>
+        <option value="3">3 Spieler</option>
+        <option value="4">4 Spieler</option>
       </select>
-      <button class="button">
+      <button class="button" id="enable-dice">
         <label class="switch"> <md-switch></md-switch> </label>&nbsp;Virtueller
         Würfel
       </button>
@@ -58,7 +58,7 @@
         </div>
       </div>
       <div class="sidebar" id="sidebar">
-        
+        <div class="dice-target" id="dice-target"></div>
       </div>
     </div>
   </body>
