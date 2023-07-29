@@ -58,7 +58,7 @@ function createSpielfigur(column,row,farbe){
   cell.style.gridColumn=column;
   cell.style.backgroundColor=farbe;
   cell.id=column+"figur"+row; //zuerst die X-Achse dann die Y-Achse
-  cell.style.transitionDuration="1s";
+  cell.home=true;
   return cell;
 }
 
@@ -150,33 +150,33 @@ function createGamefield(SpielerAnzahl) {
   document.getElementById("1cell2").style.backgroundColor = "#6495ed";
   document.getElementById("2cell1").style.backgroundColor = "#6495ed";
   document.getElementById("2cell2").style.backgroundColor = "#6495ed";
-  document.getElementById("5cell1").style.backgroundColor = "#6495ed";
+  document.getElementById("1cell5").style.backgroundColor = "#6495ed";
   for (let i = 2; i < 6; i++) {
-    document.getElementById("6cell" + i).style.backgroundColor = "#6495ed"; //Corn Flower Blue
+    document.getElementById(i + "cell6").style.backgroundColor = "#6495ed"; //Corn Flower Blue
   }
   document.getElementById("10cell1").style.backgroundColor = "#fcf75e";
   document.getElementById("11cell2").style.backgroundColor = "#fcf75e";
   document.getElementById("10cell2").style.backgroundColor = "#fcf75e";
   document.getElementById("11cell1").style.backgroundColor = "#fcf75e";
-  document.getElementById("11cell5").style.backgroundColor = "#fcf75e";
-  for (let i = 7; i < 11; i++) {
-    document.getElementById(i + "cell6").style.backgroundColor = "#fcf75e"; //Icetrine
+  document.getElementById("7cell1").style.backgroundColor = "#fcf75e";
+  for (let i = 2; i < 6; i++) {
+    document.getElementById("6cell" + i).style.backgroundColor = "#fcf75e"; //Icetrine
   }
   document.getElementById("1cell10").style.backgroundColor = "#fa8072";
   document.getElementById("2cell10").style.backgroundColor = "#fa8072";
   document.getElementById("1cell11").style.backgroundColor = "#fa8072";
   document.getElementById("2cell11").style.backgroundColor = "#fa8072";
-  document.getElementById("1cell7").style.backgroundColor = "#fa8072";
-  for (let i = 2; i < 6; i++) {
-    document.getElementById(i + "cell6").style.backgroundColor = "#fa8072"; //Tomato
+  document.getElementById("5cell11").style.backgroundColor = "#fa8072";
+  for (let i = 7; i < 11; i++) {
+    document.getElementById("6cell" + i).style.backgroundColor = "#fa8072"; //Tomato
   }
   document.getElementById("10cell10").style.backgroundColor = "#90ee90";
   document.getElementById("11cell10").style.backgroundColor = "#90ee90";
   document.getElementById("10cell11").style.backgroundColor = "#90ee90";
   document.getElementById("11cell11").style.backgroundColor = "#90ee90";
-  document.getElementById("7cell11").style.backgroundColor = "#90ee90";
+  document.getElementById("11cell7").style.backgroundColor = "#90ee90";
   for (let i = 7; i < 11; i++) {
-    document.getElementById("6cell" + i).style.backgroundColor = "#90ee90"; //Lightgreen
+    document.getElementById(i + "cell6").style.backgroundColor = "#90ee90"; //LIght Green
   }
 }
 function createArray() {
@@ -283,7 +283,7 @@ gamestart_btn.addEventListener("click", () => {
       document.getElementById(spieler1[1].id).style.gridRow=5;
       document.getElementById(spieler1[1].id).style.gridColumn=1;
       console.log("BUTTON KLICK");
-      console.log(document.getElementById(spieler1[1].id).style.gridRow);
+      console.log(document.getElementById(spieler1[1].id).home);
     })
   }
 });
