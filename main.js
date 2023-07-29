@@ -51,15 +51,41 @@ function createCell(row, column) {
   console.log(cell.id);
   return cell;
 }
-function createplayers(row,column){
+function createSpielfigur(column,row,farbe){
   let cell = document.createElement("div");
+  cell.classList.add("createdcell2");
   cell.style.gridRow=row;
   cell.style.gridColumn=column;
+  cell.style.backgroundColor=farbe;
   cell.id=column+"figur"+row; //zuerst die X-Achse dann die Y-Achse
-  cell.innerText="Spielfigur";
-  console.log(cell.id);
+  cell.style.transitionDuration="1s";
   return cell;
 }
+
+  const spieler1 = [
+    createSpielfigur(1,1,"blue"),
+    createSpielfigur(1,2,"blue"),
+    createSpielfigur(2,1,"blue"),
+    createSpielfigur(2,2,"blue"),
+  ];
+  const spieler2 = [
+    createSpielfigur(11,11,"green"),
+    createSpielfigur(11,10,"green"),
+    createSpielfigur(10,11,"green"),
+    createSpielfigur(10,10,"green"),
+  ];
+  const spieler3 = [
+    createSpielfigur(11,1,"yellow"),
+    createSpielfigur(11,2,"yellow"),
+    createSpielfigur(10,1,"yellow"),
+    createSpielfigur(10,2,"yellow"),
+  ];
+  const spieler4 = [
+    createSpielfigur(1,11,"red"),
+    createSpielfigur(2,11,"red"),
+    createSpielfigur(1,10,"red"),
+    createSpielfigur(2,10,"red"),
+  ];
 function createArrow(column, row, x, y, html) {
   let arrow = document.createElement("div");
   arrow.style.display = "flex";
@@ -71,21 +97,13 @@ function createArrow(column, row, x, y, html) {
   arrow.innerHTML = html;
   return arrow;
 }
-function createGamefield() {
-  gameboardCSS.appendChild(
-    createArrow(9, 8, "center", "flex-start", "&#8592;")
-  ); //arrow Left
-  gameboardCSS.appendChild(
-    createArrow(3, 8, "center", "flex-start", "&#8592;")
-  );
+function createGamefield(SpielerAnzahl) {
+  gameboardCSS.appendChild(createArrow(9, 8, "center", "flex-start", "&#8592;")); //arrow Left
+  gameboardCSS.appendChild(createArrow(3, 8, "center", "flex-start", "&#8592;"));
   gameboardCSS.appendChild(createArrow(9, 4, "center", "flex-end", "&#8594;")); //arrow Right
   gameboardCSS.appendChild(createArrow(3, 4, "center", "flex-end", "&#8594;"));
-  gameboardCSS.appendChild(
-    createArrow(8, 9, "flex-start", "center", "&#8595;")
-  ); //arrow down
-  gameboardCSS.appendChild(
-    createArrow(8, 3, "flex-start", "center", "&#8595;")
-  );
+  gameboardCSS.appendChild(createArrow(8, 9, "flex-start", "center", "&#8595;")); //arrow down
+  gameboardCSS.appendChild(createArrow(8, 3, "flex-start", "center", "&#8595;"));
   gameboardCSS.appendChild(createArrow(4, 3, "flex-end", "center", "&#8593;")); //arrow Up
   gameboardCSS.appendChild(createArrow(4, 9, "flex-end", "center", "&#8593;"));
   for (let y = 1; y < 12; y++) {
@@ -93,15 +111,7 @@ function createGamefield() {
     for (let x = 1; x < 12; x++) {
       //row bzw Zeile ------
       if (y == 1 || y == 2 || y == 10 || y == 11) {
-        if (
-          x == 1 ||
-          x == 2 ||
-          x == 5 ||
-          x == 6 ||
-          x == 7 ||
-          x == 10 ||
-          x == 11
-        ) {
+        if (x == 1 || x == 2 || x == 5 || x == 6 || x == 7 || x == 10 || x == 11 ) {
           gameboardCSS.appendChild(createCell(x, y));
         }
       }
@@ -119,35 +129,52 @@ function createGamefield() {
       }
     }
   }
-  document.getElementById("1cell1").style.backgroundColor = "blue";
-  document.getElementById("1cell2").style.backgroundColor = "blue";
-  document.getElementById("2cell1").style.backgroundColor = "blue";
-  document.getElementById("2cell2").style.backgroundColor = "blue";
-  document.getElementById("5cell1").style.backgroundColor = "blue";
+  console.log(SpielerAnzahl);
+  for(let i=0;i<spieler1.length;i++){
+    gameboardCSS.appendChild(spieler1[i]);
+  }
+  for(let i=0;i<spieler1.length;i++){
+    gameboardCSS.appendChild(spieler2[i]);
+  }
+  if(SpielerAnzahl=3){
+    for(let i=0;i<spieler1.length;i++){
+      gameboardCSS.appendChild(spieler3[i]);
+    }
+  }
+  if(SpielerAnzahl=4){
+    for(let i=0;i<spieler1.length;i++){
+      gameboardCSS.appendChild(spieler4[i]);
+    }
+  }
+  document.getElementById("1cell1").style.backgroundColor = "#6495ed";
+  document.getElementById("1cell2").style.backgroundColor = "#6495ed";
+  document.getElementById("2cell1").style.backgroundColor = "#6495ed";
+  document.getElementById("2cell2").style.backgroundColor = "#6495ed";
+  document.getElementById("5cell1").style.backgroundColor = "#6495ed";
   for (let i = 2; i < 6; i++) {
     document.getElementById("6cell" + i).style.backgroundColor = "#6495ed"; //Corn Flower Blue
   }
-  document.getElementById("10cell1").style.backgroundColor = "yellow";
-  document.getElementById("11cell2").style.backgroundColor = "yellow";
-  document.getElementById("10cell2").style.backgroundColor = "yellow";
-  document.getElementById("11cell1").style.backgroundColor = "yellow";
-  document.getElementById("11cell5").style.backgroundColor = "yellow";
+  document.getElementById("10cell1").style.backgroundColor = "#fcf75e";
+  document.getElementById("11cell2").style.backgroundColor = "#fcf75e";
+  document.getElementById("10cell2").style.backgroundColor = "#fcf75e";
+  document.getElementById("11cell1").style.backgroundColor = "#fcf75e";
+  document.getElementById("11cell5").style.backgroundColor = "#fcf75e";
   for (let i = 7; i < 11; i++) {
     document.getElementById(i + "cell6").style.backgroundColor = "#fcf75e"; //Icetrine
   }
-  document.getElementById("1cell10").style.backgroundColor = "red";
-  document.getElementById("2cell10").style.backgroundColor = "red";
-  document.getElementById("1cell11").style.backgroundColor = "red";
-  document.getElementById("2cell11").style.backgroundColor = "red";
-  document.getElementById("1cell7").style.backgroundColor = "red";
+  document.getElementById("1cell10").style.backgroundColor = "#fa8072";
+  document.getElementById("2cell10").style.backgroundColor = "#fa8072";
+  document.getElementById("1cell11").style.backgroundColor = "#fa8072";
+  document.getElementById("2cell11").style.backgroundColor = "#fa8072";
+  document.getElementById("1cell7").style.backgroundColor = "#fa8072";
   for (let i = 2; i < 6; i++) {
     document.getElementById(i + "cell6").style.backgroundColor = "#fa8072"; //Tomato
   }
-  document.getElementById("10cell10").style.backgroundColor = "green";
-  document.getElementById("11cell10").style.backgroundColor = "green";
-  document.getElementById("10cell11").style.backgroundColor = "green";
-  document.getElementById("11cell11").style.backgroundColor = "green";
-  document.getElementById("7cell11").style.backgroundColor = "green";
+  document.getElementById("10cell10").style.backgroundColor = "#90ee90";
+  document.getElementById("11cell10").style.backgroundColor = "#90ee90";
+  document.getElementById("10cell11").style.backgroundColor = "#90ee90";
+  document.getElementById("11cell11").style.backgroundColor = "#90ee90";
+  document.getElementById("7cell11").style.backgroundColor = "#90ee90";
   for (let i = 7; i < 11; i++) {
     document.getElementById("6cell" + i).style.backgroundColor = "#90ee90"; //Lightgreen
   }
@@ -247,8 +274,17 @@ gamestart_btn.addEventListener("click", () => {
       const number_btn = document.createElement("button");
       number_btn.setAttribute("class", "number-btn");
       number_btn.innerHTML = i;
+      number_btn.id="button"+i;             
       dice_target.appendChild(number_btn);
     }
+    button6.addEventListener("click",() => {
+      spieler1[0].style.gridRow=1;
+      spieler1[0].style.gridColumn=5;
+      document.getElementById(spieler1[1].id).style.gridRow=5;
+      document.getElementById(spieler1[1].id).style.gridColumn=1;
+      console.log("BUTTON KLICK");
+      console.log(document.getElementById(spieler1[1].id).style.gridRow);
+    })
   }
 });
 
@@ -256,9 +292,5 @@ const player_amount = document.getElementById("player-amount");
 const selected_players = player_amount.value;
 
 
-function creategame() {
-  for(let i = 0; i < player_amount.value; i++) {
-    createplayers();
-  }
-}
+
 

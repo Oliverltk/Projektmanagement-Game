@@ -81,6 +81,7 @@ body {
   border: 0.5vw solid black;
 }
 #gameboardCSS {
+  
   height: 45vw;
   width: 45vw;
   border: 0.5vw solid white;
@@ -90,17 +91,19 @@ body {
   grid-column-gap: 0.5vw;
   grid-row-gap: 0.5vw;
 }
-#cell {
-  border-radius: 50%;
-  border-color: red;
-  border-width: 10px;
-  border-style: solid;
-  background-color: gray;
-  grid-row: 1;
-  grid-column: 1;
-}
 .createdcell {
   border-radius: 50%;
+  border: 1px solid black;
+  background-color: lightgrey;
+}
+.createdcell2 {
+  position: relative;
+  display: flex;
+  justify-self: center;
+  align-self: center;
+  border-radius: 50%;
+  height: 3vw ;
+  width: 3vw;
   border: 1px solid black;
   background-color: lightgrey;
 }
