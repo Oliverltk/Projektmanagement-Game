@@ -16,7 +16,7 @@ newgame.addEventListener("click", () => {
 });
 var array;
 var zugrichtung;
-var spieler1,spieler2,spieler3,spieler4;
+let spieler1,spieler2,spieler3,spieler4;
 newgame.addEventListener("click", () => {
   //einfügen und färben der Spielfelder
   //gameboardCSS.appendChild(createCell(2,2));
@@ -35,6 +35,7 @@ gamestart.addEventListener("click", () => {
   history.pushState({ page: "main-game" }, "");
   createGamefield();
   zugrichtung = createArray();   //global scope
+  console.log("Spieleranzahl:"+selected_players);
   spielerhinzufuegen(selected_players);
 });
 window.addEventListener("popstate", (event) => {
@@ -54,7 +55,6 @@ function createCell(row, column) {
   cell.style.gridRow = row;
   cell.style.gridColumn = column;
   cell.id = column + "cell" + row; //zuerst die X-Achse dann die Y-Achse
-  console.log(cell.id);
   return cell;
 }
 function createSpielfigur(column,row,farbe,startpunkt){
@@ -66,7 +66,8 @@ function createSpielfigur(column,row,farbe,startpunkt){
   cell.id=column+"figur"+row; //zuerst die X-Achse dann die Y-Achse
   cell.home=true;
   cell.counter=0;
-  cell.start=zugrichtung[startpunkt];
+  cell.start=startpunkt;
+  cell.startFeld=zugrichtung[startpunkt];
   return cell;
 }
 function createPlayer1(){
@@ -119,7 +120,6 @@ function createArrow(column, row, x, y, html) {
 function spielerhinzufuegen(SpielerAnzahl){   //fügt die Spieler dem Gameboard hinzu und füllt die Arrays Spieler1,SPieler2, etc
   spieler1 = createPlayer1();
   spieler2 = createPlayer2();
-  console.log("Spieleranzahl:"+ SpielerAnzahl);
   for(let i=0;i<spieler1.length;i++){
     gameboardCSS.appendChild(spieler1[i]);
   }
@@ -261,47 +261,116 @@ gamestart_btn.addEventListener("click", () => {
       number_btn.id="button"+i;             
       dice_target.appendChild(number_btn);
     }
-    button6.addEventListener("click",() => {
+    button5.addEventListener("click", () => {
+      eventSpielfigur(spieler2,5);
 
-      eventSpielfigur(spieler2,6);
-      console.log("test1"+document.getElementById(spieler1[1].id).home);
-      console.log("test2"+spieler1[0].start.style.gridRow)
-      console.log("test3");
-      //movement(6,2,spieler2);
+    })
+    button6.addEventListener("click",() => {
+      alternierend(6);
+      //eventSpielfigur(spieler2,6);
+      //console.log("test1"+document.getElementById(spieler1[1].id).home);
+      //console.log("test2"+spieler1[0].startFeld.style.gridRow);
     })
   }
 });
+function alternierend(zahl){ //alternierendes hinzufügen der Funktion eventSpielfigur
+  if(selected_players==2){
+      if(alternation%2==0){
+        eventSpielfigur(spieler1,zahl);
+        console.log("Spieler Blau ist an der Reihe");
+        alternation++;
+      } else {
+        eventSpielfigur(spieler2,zahl);
+        console.log("Spieler Grün ist an der Reihe");
+        alternation++;
+      }
+     } else if(selected_players==3){
+    if(alternation%3==0){
+      eventSpielfigur(spieler1,zahl);
+      console.log("Spieler Blau ist an der Reihe");
+      alternation++;
+    } else if(alternation%3==1) {
+      eventSpielfigur(spieler2,zahl);
+      console.log("Spieler Grün ist an der Reihe");
+      alternation++;
+    } else if(alternation%3==2) {
+      eventSpielfigur(spieler3,zahl);
+      console.log("Spieler Gelb ist an der Reihe");
+      alternation++;
+    } }else if(selected_players==4){
+      if(alternation%4==0){
+        eventSpielfigur(spieler1,zahl);
+        console.log("Spieler Blau ist an der Reihe");
+        alternation++;
+      } else if(alternation%4==1) {
+        eventSpielfigur(spieler2,zahl);
+        console.log("Spieler Grün ist an der Reihe");
+        alternation++;
+      } else if(alternation%4==2) {
+        eventSpielfigur(spieler3,zahl);
+        console.log("Spieler Gelb ist an der Reihe");
+        alternation++;
+      } else if(alternation%4==3) {
+        eventSpielfigur(spieler4,zahl);
+        console.log("Spieler Rot ist an der Reihe");
+        alternation++;
+      }
+}
+
+}
+
 var playerAnzahl=4;
 var alternation=0;
+//const selected_players = player_amount.value;
 function eventSpielfigur(spieler,zahl){
+  const controller = new AbortController();
+  const {signal}=controller;
   for(let i=0;i<4;i++){
-  spieler[i].addEventListener("click",() => {
-    console.log("BUTTON KLICK");
-  })
+  spieler[i].addEventListener("click",()=> {
+    movement(6,spieler[i],spieler);
+    controller.abort();
+    
+  },{signal});
 }
 }
-function movement(zahl,figur,spieler){ 
+async function movement(zahl,figur,spieler){ 
   if(zahl==6){  //falls 6 gewürfelt wurde, figur raussstellen
+    if(figur.home){
     var occupied=false;
         for(let i=0;i<4;i++){
-            if(spieler[i].style.gridRow==spieler[i].start.style.gridRow && spieler[i].style.gridColumn==spieler[i].start.style.gridColumn){
+            if(spieler[i].style.gridRow==spieler[i].startFeld.style.gridRow && spieler[i].style.gridColumn==spieler[i].startFeld.style.gridColumn){
                 occupied=true;
             }
         }
-        for(let i=0;i<4;i++){
-        if(!occupied && spieler[i].home){
-            spieler[i].style.gridRow=spieler[i].start.style.gridRow;
-            spieler[i].style.gridColumn=spieler[i].start.style.gridColumn;
-            spieler[i].home=false;
-            break;
+        if(!occupied && figur.home){
+            figur.style.gridRow=figur.startFeld.style.gridRow;
+            figur.style.gridColumn=figur.startFeld.style.gridColumn;
+            figur.home=false;
           }
+        } else { //zähler hochzählen
+            for(let z=0;z<6;z++){
+                figur.start=figur.start+1;
+                if(figur.start>39){
+                  figur.start=0;
+                }
+                figur.style.gridRow=zugrichtung[figur.start].style.gridRow;
+                figur.style.gridColumn=zugrichtung[figur.start].style.gridColumn;
+                await delay(200);
+            }
         }
-        //movement sonstiger figur
     }
+  if(zahl==5){
+
+  }
 }
 const player_amount = document.getElementById("player-amount");
 const selected_players = player_amount.value;
 
+function delay(milliseconds){   // delay Funktion wird mit "await delay(ms)" benutzt
+    return new Promise(resolve => {
+        setTimeout(resolve, milliseconds);
+    });
+}
 
 function createArray(){
 const felder = [];
