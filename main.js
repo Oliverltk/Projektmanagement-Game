@@ -14,12 +14,16 @@ newgame.addEventListener("click", () => {
   showpage("new-game");
   history.pushState({ page: "new-game" }, "");
 });
+var array;
+var zugrichtung;
+var spieler1,spieler2,spieler3,spieler4;
 newgame.addEventListener("click", () => {
   //einfügen und färben der Spielfelder
   //gameboardCSS.appendChild(createCell(2,2));
   createGamefield();
-  const array = createArray();
-  console.log(array[1].id);
+  zugrichtung = createArray();   //global scope
+  spielerhinzufuegen(3);
+  
 });
 const gamerules = document.getElementById("gamerules-btn");
 gamerules.addEventListener("click", () => {
@@ -51,7 +55,7 @@ function createCell(row, column) {
   console.log(cell.id);
   return cell;
 }
-function createSpielfigur(column,row,farbe){
+function createSpielfigur(column,row,farbe,startpunkt){
   let cell = document.createElement("div");
   cell.classList.add("createdcell2");
   cell.style.gridRow=row;
@@ -59,33 +63,46 @@ function createSpielfigur(column,row,farbe){
   cell.style.backgroundColor=farbe;
   cell.id=column+"figur"+row; //zuerst die X-Achse dann die Y-Achse
   cell.home=true;
+  cell.counter=0;
+  cell.start=zugrichtung[startpunkt];
   return cell;
 }
-
+function createPlayer1(){
   const spieler1 = [
-    createSpielfigur(1,1,"blue"),
-    createSpielfigur(1,2,"blue"),
-    createSpielfigur(2,1,"blue"),
-    createSpielfigur(2,2,"blue"),
+    createSpielfigur(1,1,"blue",0),
+    createSpielfigur(1,2,"blue",0),
+    createSpielfigur(2,1,"blue",0),
+    createSpielfigur(2,2,"blue",0),
   ];
+  return spieler1;
+}
+function createPlayer2(){
   const spieler2 = [
-    createSpielfigur(11,11,"green"),
-    createSpielfigur(11,10,"green"),
-    createSpielfigur(10,11,"green"),
-    createSpielfigur(10,10,"green"),
+    createSpielfigur(11,11,"green",20),
+    createSpielfigur(11,10,"green",20),
+    createSpielfigur(10,11,"green",20),
+    createSpielfigur(10,10,"green",20),
   ];
+  return spieler2;
+}
+function createPlayer3(){
   const spieler3 = [
-    createSpielfigur(11,1,"yellow"),
-    createSpielfigur(11,2,"yellow"),
-    createSpielfigur(10,1,"yellow"),
-    createSpielfigur(10,2,"yellow"),
+    createSpielfigur(11,1,"yellow",10),
+    createSpielfigur(11,2,"yellow",10),
+    createSpielfigur(10,1,"yellow",10),
+    createSpielfigur(10,2,"yellow",10),
   ];
+  return spieler3;
+}
+function createPlayer4(){
   const spieler4 = [
-    createSpielfigur(1,11,"red"),
-    createSpielfigur(2,11,"red"),
-    createSpielfigur(1,10,"red"),
-    createSpielfigur(2,10,"red"),
+    createSpielfigur(1,11,"red",30),
+    createSpielfigur(2,11,"red",30),
+    createSpielfigur(1,10,"red",30),
+    createSpielfigur(2,10,"red",30),
   ];
+  return spieler4;
+}
 function createArrow(column, row, x, y, html) {
   let arrow = document.createElement("div");
   arrow.style.display = "flex";
@@ -96,6 +113,29 @@ function createArrow(column, row, x, y, html) {
   arrow.style.fontSize = "x-large";
   arrow.innerHTML = html;
   return arrow;
+}
+function spielerhinzufuegen(SpielerAnzahl){   //fügt die Spieler dem Gameboard hinzu und füllt die Arrays Spieler1,SPieler2, etc
+  spieler1 = createPlayer1();
+  spieler2 = createPlayer2();
+  console.log("Spieleranzahl:"+ SpielerAnzahl);
+  for(let i=0;i<spieler1.length;i++){
+    gameboardCSS.appendChild(spieler1[i]);
+  }
+  for(let i=0;i<spieler1.length;i++){
+    gameboardCSS.appendChild(spieler2[i]);
+  }
+  if(SpielerAnzahl==3){
+    spieler3 = createPlayer3();
+    for(let i=0;i<spieler1.length;i++){
+      gameboardCSS.appendChild(spieler3[i]);
+    }
+  }
+  if(SpielerAnzahl==4){
+    spieler4 = createPlayer4();
+    for(let i=0;i<spieler1.length;i++){
+      gameboardCSS.appendChild(spieler4[i]);
+    }
+  }
 }
 function createGamefield(SpielerAnzahl) {
   gameboardCSS.appendChild(createArrow(9, 8, "center", "flex-start", "&#8592;")); //arrow Left
@@ -127,23 +167,6 @@ function createGamefield(SpielerAnzahl) {
           gameboardCSS.appendChild(createCell(x, y));
         }
       }
-    }
-  }
-  console.log(SpielerAnzahl);
-  for(let i=0;i<spieler1.length;i++){
-    gameboardCSS.appendChild(spieler1[i]);
-  }
-  for(let i=0;i<spieler1.length;i++){
-    gameboardCSS.appendChild(spieler2[i]);
-  }
-  if(SpielerAnzahl=3){
-    for(let i=0;i<spieler1.length;i++){
-      gameboardCSS.appendChild(spieler3[i]);
-    }
-  }
-  if(SpielerAnzahl=4){
-    for(let i=0;i<spieler1.length;i++){
-      gameboardCSS.appendChild(spieler4[i]);
     }
   }
   document.getElementById("1cell1").style.backgroundColor = "#6495ed";
@@ -178,51 +201,6 @@ function createGamefield(SpielerAnzahl) {
   for (let i = 7; i < 11; i++) {
     document.getElementById(i + "cell6").style.backgroundColor = "#90ee90"; //LIght Green
   }
-}
-function createArray() {
-  //wird später für die Zug Reihenfolge benötigt
-  const felder = [];
-  felder[0] = document.getElementById("5cell1"); //Start beim blauen Feld
-  felder[1] = document.getElementById("6cell1");
-  felder[2] = document.getElementById("7cell1");
-  felder[3] = document.getElementById("7cell2");
-  felder[4] = document.getElementById("7cell3");
-  felder[5] = document.getElementById("7cell4");
-  felder[6] = document.getElementById("7cell5");
-  felder[7] = document.getElementById("8cell5");
-  felder[8] = document.getElementById("9cell5");
-  felder[9] = document.getElementById("10cell5");
-  felder[10] = document.getElementById("11cell5"); //gelbes Startfeld !!!
-  felder[11] = document.getElementById("11cell6");
-  felder[12] = document.getElementById("11cell7");
-  felder[13] = document.getElementById("10cell7");
-  felder[14] = document.getElementById("9cell7");
-  felder[15] = document.getElementById("8cell7");
-  felder[16] = document.getElementById("7cell7");
-  felder[17] = document.getElementById("7cell8");
-  felder[18] = document.getElementById("7cell9");
-  felder[19] = document.getElementById("7cell10");
-  felder[20] = document.getElementById("7cell11"); //grünes Startfeld !!!
-  felder[21] = document.getElementById("6cell11");
-  felder[22] = document.getElementById("5cell11");
-  felder[23] = document.getElementById("5cell10");
-  felder[24] = document.getElementById("5cell9");
-  felder[25] = document.getElementById("5cell8");
-  felder[26] = document.getElementById("5cell7");
-  felder[27] = document.getElementById("4cell7");
-  felder[28] = document.getElementById("3cell7");
-  felder[29] = document.getElementById("2cell7");
-  felder[30] = document.getElementById("1cell7"); //rotes Startfeld !!!
-  felder[31] = document.getElementById("1cell6");
-  felder[32] = document.getElementById("1cell5");
-  felder[33] = document.getElementById("2cell5");
-  felder[34] = document.getElementById("3cell5");
-  felder[35] = document.getElementById("4cell5");
-  felder[36] = document.getElementById("5cell5");
-  felder[37] = document.getElementById("5cell4");
-  felder[38] = document.getElementById("5cell3");
-  felder[39] = document.getElementById("5cell2");
-  return felder;
 }
 //Adding content to gamerules
 
@@ -280,17 +258,78 @@ gamestart_btn.addEventListener("click", () => {
     button6.addEventListener("click",() => {
       spieler1[0].style.gridRow=1;
       spieler1[0].style.gridColumn=5;
-      document.getElementById(spieler1[1].id).style.gridRow=5;
-      document.getElementById(spieler1[1].id).style.gridColumn=1;
       console.log("BUTTON KLICK");
-      console.log(document.getElementById(spieler1[1].id).home);
+      console.log("test1"+document.getElementById(spieler1[1].id).home);
+      console.log("test2"+spieler1[0].start.style.gridRow)
+      console.log("test3");
+      movement(6,2,spieler2);
     })
   }
 });
-
+function movement(zahl,figur,spieler){ 
+  if(zahl==6){  //falls 6 gewürfelt wurde, figur raussstellen
+    var occupied=false;
+        for(let i=0;i<4;i++){
+            if(spieler[i].style.gridRow==spieler[i].start.style.gridRow && spieler[i].style.gridColumn==spieler[i].start.style.gridColumn){
+                occupied=true;
+            }
+        }
+        for(let i=0;i<4;i++){
+        if(!occupied && spieler[i].home){
+            spieler[i].style.gridRow=spieler[i].start.style.gridRow;
+            spieler[i].style.gridColumn=spieler[i].start.style.gridColumn;
+            spieler[i].home=false;
+            break;
+          }
+        }
+        //movement sonstiger figur
+    }
+}
 const player_amount = document.getElementById("player-amount");
 const selected_players = player_amount.value;
 
 
-
-
+function createArray(){
+const felder = [];
+  felder[0] = document.getElementById("1cell5"); //blaues Startfeld
+  felder[1] = document.getElementById("2cell5");
+  felder[2] = document.getElementById("3cell5");
+  felder[3] = document.getElementById("4cell5");
+  felder[4] = document.getElementById("5cell5");
+  felder[5] = document.getElementById("5cell4");
+  felder[6] = document.getElementById("5cell3");
+  felder[7] = document.getElementById("5cell2");
+  felder[8] = document.getElementById("5cell1"); 
+  felder[9] = document.getElementById("6cell1");
+  felder[10] = document.getElementById("7cell1"); //gelbes Startfeld
+  felder[11] = document.getElementById("7cell2");
+  felder[12] = document.getElementById("7cell3");
+  felder[13] = document.getElementById("7cell4");
+  felder[14] = document.getElementById("7cell5");
+  felder[15] = document.getElementById("8cell5");
+  felder[16] = document.getElementById("9cell5");
+  felder[17] = document.getElementById("10cell5");
+  felder[18] = document.getElementById("11cell5");  
+  felder[19] = document.getElementById("11cell6");
+  felder[20] = document.getElementById("11cell7"); //grünes Startfeld
+  felder[21] = document.getElementById("10cell7");
+  felder[22] = document.getElementById("9cell7");
+  felder[23] = document.getElementById("8cell7");
+  felder[24] = document.getElementById("7cell7");
+  felder[25] = document.getElementById("7cell8");
+  felder[26] = document.getElementById("7cell9");
+  felder[27] = document.getElementById("7cell10");
+  felder[28] = document.getElementById("7cell11"); 
+  felder[29] = document.getElementById("6cell11");
+  felder[30] = document.getElementById("5cell11"); //rotes Startfeld
+  felder[31] = document.getElementById("5cell10");
+  felder[32] = document.getElementById("5cell9");
+  felder[33] = document.getElementById("5cell8");
+  felder[34] = document.getElementById("5cell7");
+  felder[35] = document.getElementById("4cell7");
+  felder[36] = document.getElementById("3cell7");
+  felder[37] = document.getElementById("2cell7");
+  felder[38] = document.getElementById("1cell7"); 
+  felder[39] = document.getElementById("1cell6"); 
+  return felder;
+}
