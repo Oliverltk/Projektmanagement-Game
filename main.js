@@ -20,10 +20,9 @@ var spieler1,spieler2,spieler3,spieler4;
 newgame.addEventListener("click", () => {
   //einfügen und färben der Spielfelder
   //gameboardCSS.appendChild(createCell(2,2));
-  createGamefield();
-  zugrichtung = createArray();   //global scope
-  spielerhinzufuegen(3);
-  
+  //createGamefield();
+  //zugrichtung = createArray();   //global scope
+  //spielerhinzufuegen(player_amount);
 });
 const gamerules = document.getElementById("gamerules-btn");
 gamerules.addEventListener("click", () => {
@@ -34,6 +33,9 @@ const gamestart = document.getElementById("gamestart-btn");
 gamestart.addEventListener("click", () => {
   showpage("main-game");
   history.pushState({ page: "main-game" }, "");
+  createGamefield();
+  zugrichtung = createArray();   //global scope
+  spielerhinzufuegen(selected_players);
 });
 window.addEventListener("popstate", (event) => {
   console.log(event.state);
@@ -131,6 +133,10 @@ function spielerhinzufuegen(SpielerAnzahl){   //fügt die Spieler dem Gameboard 
     }
   }
   if(SpielerAnzahl==4){
+    spieler3 = createPlayer3();
+    for(let i=0;i<spieler1.length;i++){
+      gameboardCSS.appendChild(spieler3[i]);
+    }
     spieler4 = createPlayer4();
     for(let i=0;i<spieler1.length;i++){
       gameboardCSS.appendChild(spieler4[i]);
@@ -256,16 +262,24 @@ gamestart_btn.addEventListener("click", () => {
       dice_target.appendChild(number_btn);
     }
     button6.addEventListener("click",() => {
-      spieler1[0].style.gridRow=1;
-      spieler1[0].style.gridColumn=5;
-      console.log("BUTTON KLICK");
+
+      eventSpielfigur(spieler2,6);
       console.log("test1"+document.getElementById(spieler1[1].id).home);
       console.log("test2"+spieler1[0].start.style.gridRow)
       console.log("test3");
-      movement(6,2,spieler2);
+      //movement(6,2,spieler2);
     })
   }
 });
+var playerAnzahl=4;
+var alternation=0;
+function eventSpielfigur(spieler,zahl){
+  for(let i=0;i<4;i++){
+  spieler[i].addEventListener("click",() => {
+    console.log("BUTTON KLICK");
+  })
+}
+}
 function movement(zahl,figur,spieler){ 
   if(zahl==6){  //falls 6 gewürfelt wurde, figur raussstellen
     var occupied=false;
