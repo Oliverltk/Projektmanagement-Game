@@ -261,9 +261,20 @@ gamestart_btn.addEventListener("click", () => {
       number_btn.id="button"+i;             
       dice_target.appendChild(number_btn);
     }
+    button1.addEventListener("click", () => {
+      alternierend(1);
+    })
+    button2.addEventListener("click", () => {
+      alternierend(2);
+    })
+    button3.addEventListener("click", () => {
+      alternierend(3);
+    })
+    button4.addEventListener("click", () => {
+      alternierend(4);
+    })
     button5.addEventListener("click", () => {
-      eventSpielfigur(spieler2,5);
-
+      alternierend(5);
     })
     button6.addEventListener("click",() => {
       alternierend(6);
@@ -327,7 +338,7 @@ function eventSpielfigur(spieler,zahl){
   const {signal}=controller;
   for(let i=0;i<4;i++){
   spieler[i].addEventListener("click",()=> {
-    movement(6,spieler[i],spieler);
+    movement(zahl,spieler[i],spieler);
     controller.abort();
     
   },{signal});
@@ -359,8 +370,60 @@ async function movement(zahl,figur,spieler){
             }
         }
     }
-  if(zahl==5){
-
+  if(zahl==5 && !figur.home){
+    for(let z=0;z<zahl;z++){
+      figur.start=figur.start+1;
+      if(figur.start>39){
+        figur.start=0;
+      }
+      figur.style.gridRow=zugrichtung[figur.start].style.gridRow;
+      figur.style.gridColumn=zugrichtung[figur.start].style.gridColumn;
+      await delay(200);
+  }
+  }
+  if(zahl==4 && !figur.home){
+    for(let z=0;z<zahl;z++){
+      figur.start=figur.start+1;
+      if(figur.start>39){
+        figur.start=0;
+      }
+      figur.style.gridRow=zugrichtung[figur.start].style.gridRow;
+      figur.style.gridColumn=zugrichtung[figur.start].style.gridColumn;
+      await delay(200);
+  }
+  }
+  if(zahl==3 && !figur.home){
+    for(let z=0;z<zahl;z++){
+      figur.start=figur.start+1;
+      if(figur.start>39){
+        figur.start=0;
+      }
+      figur.style.gridRow=zugrichtung[figur.start].style.gridRow;
+      figur.style.gridColumn=zugrichtung[figur.start].style.gridColumn;
+      await delay(200);
+  }
+  }
+  if(zahl==2 && !figur.home){
+    for(let z=0;z<zahl;z++){
+      figur.start=figur.start+1;
+      if(figur.start>39){
+        figur.start=0;
+      }
+      figur.style.gridRow=zugrichtung[figur.start].style.gridRow;
+      figur.style.gridColumn=zugrichtung[figur.start].style.gridColumn;
+      await delay(200);
+  }
+  }
+  if(zahl==1 && !figur.home){
+    for(let z=0;z<1;z++){
+      figur.start=figur.start+1;
+      if(figur.start>39){
+        figur.start=0;
+      }
+      figur.style.gridRow=zugrichtung[figur.start].style.gridRow;
+      figur.style.gridColumn=zugrichtung[figur.start].style.gridColumn;
+      await delay(200);
+  }
   }
 }
 const player_amount = document.getElementById("player-amount");
