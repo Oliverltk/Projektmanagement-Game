@@ -260,9 +260,13 @@ gamestart_btn.addEventListener("click", () => {
   if (dice_btn.selected) {
     let number_result = document.createElement("input");
     number_result.type = "number";
+    number_result.classList.add("sidebar-margin");
+    let linebreak = document.createElement("br");
     const start_dice = document.createElement("button");
+    start_dice.classList.add("sidebar-margin");
     start_dice.innerHTML = "Neue Zahl";
     dice_target.appendChild(number_result);
+    dice_target.appendChild(linebreak);
     dice_target.appendChild(start_dice);
     start_dice.addEventListener("click", () => {
       console.log("click");
@@ -378,9 +382,11 @@ function alternierend(zahl) {
   }
 }
 const currentheader = document.createElement("h1");
+currentheader.classList.add("sidebar-margin");
 currentheader.innerHTML = "Aktueller Spieler";
 
 let currenttext = document.createElement("p");
+currenttext.classList.add("sidebar-margin");
 currenttext.setAttribute("id", "currenttext");
 
 let currentplayer_target = document.getElementById("currentplayer_target");
@@ -388,7 +394,7 @@ let currentplayer_target = document.getElementById("currentplayer_target");
 currentplayer_target.appendChild(currentheader);
 
 function currentplayer(playercolor) {
-  currenttext.innerHTML = "Spieler " + playercolor + " ist an der Reihe";
+  currenttext.innerHTML = "Spieler " + playercolor + " ist an der Reihe.";
   currentplayer_target.appendChild(currenttext);
 }
 
