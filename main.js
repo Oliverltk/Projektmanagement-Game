@@ -16,7 +16,7 @@ newgame.addEventListener("click", () => {
 });
 var array;
 var zugrichtung;
-let spieler1,spieler2,spieler3,spieler4;
+let spieler1, spieler2, spieler3, spieler4;
 newgame.addEventListener("click", () => {
   //einfügen und färben der Spielfelder
   //gameboardCSS.appendChild(createCell(2,2));
@@ -35,8 +35,8 @@ gamestart.addEventListener("click", () => {
   history.pushState({ page: "main-game" }, "");
   selected_players = player_amount.value;
   createGamefield();
-  zugrichtung = createArray();   //global scope
-  console.log("Spieleranzahl:"+selected_players);
+  zugrichtung = createArray(); //global scope
+  console.log("Spieleranzahl:" + selected_players);
   spielerhinzufuegen(selected_players);
 });
 window.addEventListener("popstate", (event) => {
@@ -58,52 +58,52 @@ function createCell(row, column) {
   cell.id = column + "cell" + row; //zuerst die X-Achse dann die Y-Achse
   return cell;
 }
-function createSpielfigur(column,row,farbe,startpunkt){
+function createSpielfigur(column, row, farbe, startpunkt) {
   let cell = document.createElement("div");
   cell.classList.add("createdcell2");
-  cell.style.gridRow=row;
-  cell.style.gridColumn=column;
-  cell.style.backgroundColor=farbe;
-  cell.id=column+"figur"+row; //zuerst die X-Achse dann die Y-Achse
-  cell.home=true;
-  cell.counter=0;
-  cell.start=startpunkt;
-  cell.startFeld=zugrichtung[startpunkt];
+  cell.style.gridRow = row;
+  cell.style.gridColumn = column;
+  cell.style.backgroundColor = farbe;
+  cell.id = column + "figur" + row; //zuerst die X-Achse dann die Y-Achse
+  cell.home = true;
+  cell.counter = 0;
+  cell.start = startpunkt;
+  cell.startFeld = zugrichtung[startpunkt];
   return cell;
 }
-function createPlayer1(){
+function createPlayer1() {
   const spieler1 = [
-    createSpielfigur(1,1,"blue",0),
-    createSpielfigur(1,2,"blue",0),
-    createSpielfigur(2,1,"blue",0),
-    createSpielfigur(2,2,"blue",0),
+    createSpielfigur(1, 1, "blue", 0),
+    createSpielfigur(1, 2, "blue", 0),
+    createSpielfigur(2, 1, "blue", 0),
+    createSpielfigur(2, 2, "blue", 0),
   ];
   return spieler1;
 }
-function createPlayer2(){
+function createPlayer2() {
   const spieler2 = [
-    createSpielfigur(11,11,"green",20),
-    createSpielfigur(11,10,"green",20),
-    createSpielfigur(10,11,"green",20),
-    createSpielfigur(10,10,"green",20),
+    createSpielfigur(11, 11, "green", 20),
+    createSpielfigur(11, 10, "green", 20),
+    createSpielfigur(10, 11, "green", 20),
+    createSpielfigur(10, 10, "green", 20),
   ];
   return spieler2;
 }
-function createPlayer3(){
+function createPlayer3() {
   const spieler3 = [
-    createSpielfigur(11,1,"yellow",10),
-    createSpielfigur(11,2,"yellow",10),
-    createSpielfigur(10,1,"yellow",10),
-    createSpielfigur(10,2,"yellow",10),
+    createSpielfigur(11, 1, "yellow", 10),
+    createSpielfigur(11, 2, "yellow", 10),
+    createSpielfigur(10, 1, "yellow", 10),
+    createSpielfigur(10, 2, "yellow", 10),
   ];
   return spieler3;
 }
-function createPlayer4(){
+function createPlayer4() {
   const spieler4 = [
-    createSpielfigur(1,11,"red",30),
-    createSpielfigur(2,11,"red",30),
-    createSpielfigur(1,10,"red",30),
-    createSpielfigur(2,10,"red",30),
+    createSpielfigur(1, 11, "red", 30),
+    createSpielfigur(2, 11, "red", 30),
+    createSpielfigur(1, 10, "red", 30),
+    createSpielfigur(2, 10, "red", 30),
   ];
   return spieler4;
 }
@@ -118,39 +118,48 @@ function createArrow(column, row, x, y, html) {
   arrow.innerHTML = html;
   return arrow;
 }
-function spielerhinzufuegen(SpielerAnzahl){   //fügt die Spieler dem Gameboard hinzu und füllt die Arrays Spieler1,SPieler2, etc
+function spielerhinzufuegen(SpielerAnzahl) {
+  //fügt die Spieler dem Gameboard hinzu und füllt die Arrays Spieler1,SPieler2, etc
   spieler1 = createPlayer1();
   spieler2 = createPlayer2();
-  for(let i=0;i<spieler1.length;i++){
+  for (let i = 0; i < spieler1.length; i++) {
     gameboardCSS.appendChild(spieler1[i]);
   }
-  for(let i=0;i<spieler1.length;i++){
+  for (let i = 0; i < spieler1.length; i++) {
     gameboardCSS.appendChild(spieler2[i]);
   }
-  if(SpielerAnzahl==3){
+  if (SpielerAnzahl == 3) {
     spieler3 = createPlayer3();
-    for(let i=0;i<spieler1.length;i++){
+    for (let i = 0; i < spieler1.length; i++) {
       gameboardCSS.appendChild(spieler3[i]);
     }
   }
-  if(SpielerAnzahl==4){
+  if (SpielerAnzahl == 4) {
     spieler3 = createPlayer3();
-    for(let i=0;i<spieler1.length;i++){
+    for (let i = 0; i < spieler1.length; i++) {
       gameboardCSS.appendChild(spieler3[i]);
     }
     spieler4 = createPlayer4();
-    for(let i=0;i<spieler1.length;i++){
+    for (let i = 0; i < spieler1.length; i++) {
       gameboardCSS.appendChild(spieler4[i]);
     }
   }
 }
 function createGamefield(SpielerAnzahl) {
-  gameboardCSS.appendChild(createArrow(9, 8, "center", "flex-start", "&#8592;")); //arrow Left
-  gameboardCSS.appendChild(createArrow(3, 8, "center", "flex-start", "&#8592;"));
+  gameboardCSS.appendChild(
+    createArrow(9, 8, "center", "flex-start", "&#8592;")
+  ); //arrow Left
+  gameboardCSS.appendChild(
+    createArrow(3, 8, "center", "flex-start", "&#8592;")
+  );
   gameboardCSS.appendChild(createArrow(9, 4, "center", "flex-end", "&#8594;")); //arrow Right
   gameboardCSS.appendChild(createArrow(3, 4, "center", "flex-end", "&#8594;"));
-  gameboardCSS.appendChild(createArrow(8, 9, "flex-start", "center", "&#8595;")); //arrow down
-  gameboardCSS.appendChild(createArrow(8, 3, "flex-start", "center", "&#8595;"));
+  gameboardCSS.appendChild(
+    createArrow(8, 9, "flex-start", "center", "&#8595;")
+  ); //arrow down
+  gameboardCSS.appendChild(
+    createArrow(8, 3, "flex-start", "center", "&#8595;")
+  );
   gameboardCSS.appendChild(createArrow(4, 3, "flex-end", "center", "&#8593;")); //arrow Up
   gameboardCSS.appendChild(createArrow(4, 9, "flex-end", "center", "&#8593;"));
   for (let y = 1; y < 12; y++) {
@@ -158,7 +167,15 @@ function createGamefield(SpielerAnzahl) {
     for (let x = 1; x < 12; x++) {
       //row bzw Zeile ------
       if (y == 1 || y == 2 || y == 10 || y == 11) {
-        if (x == 1 || x == 2 || x == 5 || x == 6 || x == 7 || x == 10 || x == 11 ) {
+        if (
+          x == 1 ||
+          x == 2 ||
+          x == 5 ||
+          x == 6 ||
+          x == 7 ||
+          x == 10 ||
+          x == 11
+        ) {
           gameboardCSS.appendChild(createCell(x, y));
         }
       }
@@ -259,185 +276,213 @@ gamestart_btn.addEventListener("click", () => {
       const number_btn = document.createElement("button");
       number_btn.setAttribute("class", "number-btn");
       number_btn.innerHTML = i;
-      number_btn.id="button"+i;             
+      number_btn.id = "button" + i;
       dice_target.appendChild(number_btn);
     }
     button1.addEventListener("click", () => {
       alternierend(1);
-    })
+    });
     button2.addEventListener("click", () => {
       alternierend(2);
-    })
+    });
     button3.addEventListener("click", () => {
       alternierend(3);
-    })
+    });
     button4.addEventListener("click", () => {
       alternierend(4);
-    })
+    });
     button5.addEventListener("click", () => {
       alternierend(5);
-    })
-    button6.addEventListener("click",() => {
+    });
+    button6.addEventListener("click", () => {
       alternierend(6);
       //eventSpielfigur(spieler2,6);
       //console.log("test1"+document.getElementById(spieler1[1].id).home);
       //console.log("test2"+spieler1[0].startFeld.style.gridRow);
-    })
+    });
   }
 });
-function alternierend(zahl){ //alternierendes hinzufügen der Funktion eventSpielfigur
-  if(selected_players==2){
-      if(alternation%2==0){
-        eventSpielfigur(spieler1,zahl);
-        console.log("Spieler Blau ist an der Reihe");
-        alternation++;
-      } else {
-        eventSpielfigur(spieler2,zahl);
-        console.log("Spieler Grün ist an der Reihe");
-        alternation++;
-      }
-     } else if(selected_players==3){
-    if(alternation%3==0){
-      eventSpielfigur(spieler1,zahl);
+function alternierend(zahl) {
+  //alternierendes hinzufügen der Funktion eventSpielfigur
+  if (selected_players == 2) {
+    if (alternation % 2 == 0) {
+      eventSpielfigur(spieler1, zahl);
+      currentplayer("Blau");
       console.log("Spieler Blau ist an der Reihe");
       alternation++;
-    } else if(alternation%3==1) {
-      eventSpielfigur(spieler2,zahl);
+    } else {
+      eventSpielfigur(spieler2, zahl);
+      currentplayer("Grün");
       console.log("Spieler Grün ist an der Reihe");
       alternation++;
-    } else if(alternation%3==2) {
-      eventSpielfigur(spieler3,zahl);
+    }
+  } else if (selected_players == 3) {
+    if (alternation % 3 == 0) {
+      eventSpielfigur(spieler1, zahl);
+      currentplayer("Blau");
+      console.log("Spieler Blau ist an der Reihe");
+      alternation++;
+    } else if (alternation % 3 == 1) {
+      eventSpielfigur(spieler2, zahl);
+      currentplayer("Grün");
+      console.log("Spieler Grün ist an der Reihe");
+      alternation++;
+    } else if (alternation % 3 == 2) {
+      eventSpielfigur(spieler3, zahl);
+      currentplayer("Gelb");
       console.log("Spieler Gelb ist an der Reihe");
       alternation++;
-    } }else if(selected_players==4){
-      if(alternation%4==0){
-        eventSpielfigur(spieler1,zahl);
-        console.log("Spieler Blau ist an der Reihe");
-        alternation++;
-      } else if(alternation%4==1) {
-        eventSpielfigur(spieler2,zahl);
-        console.log("Spieler Grün ist an der Reihe");
-        alternation++;
-      } else if(alternation%4==2) {
-        eventSpielfigur(spieler3,zahl);
-        console.log("Spieler Gelb ist an der Reihe");
-        alternation++;
-      } else if(alternation%4==3) {
-        eventSpielfigur(spieler4,zahl);
-        console.log("Spieler Rot ist an der Reihe");
-        alternation++;
-      }
-}
-
-}
-
-var playerAnzahl=4;
-var alternation=0;
-//const selected_players = player_amount.value;
-function eventSpielfigur(spieler,zahl){
-  const controller = new AbortController();
-  const {signal}=controller;
-  for(let i=0;i<4;i++){
-  spieler[i].addEventListener("click",()=> {
-    movement(zahl,spieler[i],spieler);
-    controller.abort();
-    
-  },{signal});
-}
-}
-async function movement(zahl,figur,spieler){ 
-  if(zahl==6){  //falls 6 gewürfelt wurde, figur raussstellen
-    if(figur.home){
-    var occupied=false;
-        for(let i=0;i<4;i++){
-            if(spieler[i].style.gridRow==spieler[i].startFeld.style.gridRow && spieler[i].style.gridColumn==spieler[i].startFeld.style.gridColumn){
-                occupied=true;
-            }
-        }
-        if(!occupied && figur.home){
-            figur.style.gridRow=figur.startFeld.style.gridRow;
-            figur.style.gridColumn=figur.startFeld.style.gridColumn;
-            figur.home=false;
-          }
-        } else { //zähler hochzählen
-            for(let z=0;z<6;z++){
-                figur.start=figur.start+1;
-                if(figur.start>39){
-                  figur.start=0;
-                }
-                figur.style.gridRow=zugrichtung[figur.start].style.gridRow;
-                figur.style.gridColumn=zugrichtung[figur.start].style.gridColumn;
-                await delay(200);
-            }
-        }
     }
-  else if(zahl==5 && !figur.home){
-    for(let z=0;z<zahl;z++){
-      figur.start=figur.start+1;
-      if(figur.start>39){
-        figur.start=0;
+  } else if (selected_players == 4) {
+    if (alternation % 4 == 0) {
+      eventSpielfigur(spieler1, zahl);
+      currentplayer("Blau");
+      console.log("Spieler Blau ist an der Reihe");
+      alternation++;
+    } else if (alternation % 4 == 1) {
+      eventSpielfigur(spieler2, zahl);
+      currentplayer("Grün");
+      console.log("Spieler Grün ist an der Reihe");
+      alternation++;
+    } else if (alternation % 4 == 2) {
+      eventSpielfigur(spieler3, zahl);
+      currentplayer("Gelb");
+      console.log("Spieler Gelb ist an der Reihe");
+      alternation++;
+    } else if (alternation % 4 == 3) {
+      eventSpielfigur(spieler4, zahl);
+      currentplayer("Rot");
+      console.log("Spieler Rot ist an der Reihe");
+      alternation++;
+    }
+  }
+}
+const currentheader = document.createElement("h1");
+currentheader.innerHTML = "Aktueller Spieler";
+
+let currenttext = document.createElement("p");
+currenttext.setAttribute("id", "currenttext");
+
+let currentplayer_target = document.getElementById("currentplayer_target");
+
+currentplayer_target.appendChild(currentheader);
+
+function currentplayer(playercolor) {
+  currenttext.innerHTML = "Spieler " + playercolor + " ist an der Reihe";
+  currentplayer_target.appendChild(currenttext);
+}
+
+var playerAnzahl = 4;
+var alternation = 0;
+//const selected_players = player_amount.value;
+function eventSpielfigur(spieler, zahl) {
+  const controller = new AbortController();
+  const { signal } = controller;
+  for (let i = 0; i < 4; i++) {
+    spieler[i].addEventListener(
+      "click",
+      () => {
+        movement(zahl, spieler[i], spieler);
+        controller.abort();
+      },
+      { signal }
+    );
+  }
+}
+async function movement(zahl, figur, spieler) {
+  if (zahl == 6) {
+    //falls 6 gewürfelt wurde, figur raussstellen
+    if (figur.home) {
+      var occupied = false;
+      for (let i = 0; i < 4; i++) {
+        if (
+          spieler[i].style.gridRow == spieler[i].startFeld.style.gridRow &&
+          spieler[i].style.gridColumn == spieler[i].startFeld.style.gridColumn
+        ) {
+          occupied = true;
+        }
       }
-      figur.style.gridRow=zugrichtung[figur.start].style.gridRow;
-      figur.style.gridColumn=zugrichtung[figur.start].style.gridColumn;
-      await delay(200);
-  }
-  }
-  else if(zahl==4 && !figur.home){
-    for(let z=0;z<zahl;z++){
-      figur.start=figur.start+1;
-      if(figur.start>39){
-        figur.start=0;
+      if (!occupied && figur.home) {
+        figur.style.gridRow = figur.startFeld.style.gridRow;
+        figur.style.gridColumn = figur.startFeld.style.gridColumn;
+        figur.home = false;
       }
-      figur.style.gridRow=zugrichtung[figur.start].style.gridRow;
-      figur.style.gridColumn=zugrichtung[figur.start].style.gridColumn;
-      await delay(200);
-  }
-  }
-  else if(zahl==3 && !figur.home){
-    for(let z=0;z<zahl;z++){
-      figur.start=figur.start+1;
-      if(figur.start>39){
-        figur.start=0;
+    } else {
+      //zähler hochzählen
+      for (let z = 0; z < 6; z++) {
+        figur.start = figur.start + 1;
+        if (figur.start > 39) {
+          figur.start = 0;
+        }
+        figur.style.gridRow = zugrichtung[figur.start].style.gridRow;
+        figur.style.gridColumn = zugrichtung[figur.start].style.gridColumn;
+        await delay(200);
       }
-      figur.style.gridRow=zugrichtung[figur.start].style.gridRow;
-      figur.style.gridColumn=zugrichtung[figur.start].style.gridColumn;
-      await delay(200);
-  }
-  }
-  else if(zahl==2 && !figur.home){
-    for(let z=0;z<zahl;z++){
-      figur.start=figur.start+1;
-      if(figur.start>39){
-        figur.start=0;
+    }
+  } else if (zahl == 5 && !figur.home) {
+    for (let z = 0; z < zahl; z++) {
+      figur.start = figur.start + 1;
+      if (figur.start > 39) {
+        figur.start = 0;
       }
-      figur.style.gridRow=zugrichtung[figur.start].style.gridRow;
-      figur.style.gridColumn=zugrichtung[figur.start].style.gridColumn;
+      figur.style.gridRow = zugrichtung[figur.start].style.gridRow;
+      figur.style.gridColumn = zugrichtung[figur.start].style.gridColumn;
       await delay(200);
-  }
-  }
-  else if(zahl==1 && !figur.home){
-    for(let z=0;z<1;z++){
-      figur.start=figur.start+1;
-      if(figur.start>39){
-        figur.start=0;
+    }
+  } else if (zahl == 4 && !figur.home) {
+    for (let z = 0; z < zahl; z++) {
+      figur.start = figur.start + 1;
+      if (figur.start > 39) {
+        figur.start = 0;
       }
-      figur.style.gridRow=zugrichtung[figur.start].style.gridRow;
-      figur.style.gridColumn=zugrichtung[figur.start].style.gridColumn;
+      figur.style.gridRow = zugrichtung[figur.start].style.gridRow;
+      figur.style.gridColumn = zugrichtung[figur.start].style.gridColumn;
       await delay(200);
-  }
+    }
+  } else if (zahl == 3 && !figur.home) {
+    for (let z = 0; z < zahl; z++) {
+      figur.start = figur.start + 1;
+      if (figur.start > 39) {
+        figur.start = 0;
+      }
+      figur.style.gridRow = zugrichtung[figur.start].style.gridRow;
+      figur.style.gridColumn = zugrichtung[figur.start].style.gridColumn;
+      await delay(200);
+    }
+  } else if (zahl == 2 && !figur.home) {
+    for (let z = 0; z < zahl; z++) {
+      figur.start = figur.start + 1;
+      if (figur.start > 39) {
+        figur.start = 0;
+      }
+      figur.style.gridRow = zugrichtung[figur.start].style.gridRow;
+      figur.style.gridColumn = zugrichtung[figur.start].style.gridColumn;
+      await delay(200);
+    }
+  } else if (zahl == 1 && !figur.home) {
+    for (let z = 0; z < 1; z++) {
+      figur.start = figur.start + 1;
+      if (figur.start > 39) {
+        figur.start = 0;
+      }
+      figur.style.gridRow = zugrichtung[figur.start].style.gridRow;
+      figur.style.gridColumn = zugrichtung[figur.start].style.gridColumn;
+      await delay(200);
+    }
   }
 }
 const player_amount = document.getElementById("player-amount");
 let selected_players = player_amount.value;
 
-function delay(milliseconds){   // delay Funktion wird mit "await delay(ms)" benutzt
-    return new Promise(resolve => {
-        setTimeout(resolve, milliseconds);
-    });
+function delay(milliseconds) {
+  // delay Funktion wird mit "await delay(ms)" benutzt
+  return new Promise((resolve) => {
+    setTimeout(resolve, milliseconds);
+  });
 }
 
-function createArray(){
-const felder = [];
+function createArray() {
+  const felder = [];
   felder[0] = document.getElementById("1cell5"); //blaues Startfeld
   felder[1] = document.getElementById("2cell5");
   felder[2] = document.getElementById("3cell5");
@@ -446,7 +491,7 @@ const felder = [];
   felder[5] = document.getElementById("5cell4");
   felder[6] = document.getElementById("5cell3");
   felder[7] = document.getElementById("5cell2");
-  felder[8] = document.getElementById("5cell1"); 
+  felder[8] = document.getElementById("5cell1");
   felder[9] = document.getElementById("6cell1");
   felder[10] = document.getElementById("7cell1"); //gelbes Startfeld
   felder[11] = document.getElementById("7cell2");
@@ -456,7 +501,7 @@ const felder = [];
   felder[15] = document.getElementById("8cell5");
   felder[16] = document.getElementById("9cell5");
   felder[17] = document.getElementById("10cell5");
-  felder[18] = document.getElementById("11cell5");  
+  felder[18] = document.getElementById("11cell5");
   felder[19] = document.getElementById("11cell6");
   felder[20] = document.getElementById("11cell7"); //grünes Startfeld
   felder[21] = document.getElementById("10cell7");
@@ -466,7 +511,7 @@ const felder = [];
   felder[25] = document.getElementById("7cell8");
   felder[26] = document.getElementById("7cell9");
   felder[27] = document.getElementById("7cell10");
-  felder[28] = document.getElementById("7cell11"); 
+  felder[28] = document.getElementById("7cell11");
   felder[29] = document.getElementById("6cell11");
   felder[30] = document.getElementById("5cell11"); //rotes Startfeld
   felder[31] = document.getElementById("5cell10");
@@ -476,7 +521,15 @@ const felder = [];
   felder[35] = document.getElementById("4cell7");
   felder[36] = document.getElementById("3cell7");
   felder[37] = document.getElementById("2cell7");
-  felder[38] = document.getElementById("1cell7"); 
-  felder[39] = document.getElementById("1cell6"); 
+  felder[38] = document.getElementById("1cell7");
+  felder[39] = document.getElementById("1cell6");
   return felder;
 }
+
+//detect winner
+let winner; //Spieler
+let winnertext = document.getElementById("winnertext");
+winnertext.innerHTML = "Gewinner: Spieler " + winner;
+
+
+
