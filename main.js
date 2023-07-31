@@ -370,24 +370,43 @@ gamestart_btn.addEventListener("click", () => {
     });
   }
 });
-function alternierend(zahl) {
+async function alternierend(zahl) {
+  
+  switch (getcurrentcolor()) {
+    case "Blau":
+      await eventSpielfigur(spieler1, zahl);
+      break;
+    case "Grün":
+      await eventSpielfigur(spieler2, zahl);
+      break;
+    case "Gelb":
+      await eventSpielfigur(spieler3, zahl);
+      break;
+    case "Rot":
+      await eventSpielfigur(spieler4, zahl);
+      break;
+  }
+  alternation++;
+
+  currentplayer(getcurrentcolor());
+  /*
   //alternierendes hinzufügen der Funktion eventSpielfigur
   if (selected_players == 2) {
     if (alternation % 2 == 0) {
-      eventSpielfigur(spieler1, zahl);
-      currentplayer("Blau");
       console.log("Spieler Blau ist an der Reihe");
       alternation++;
+      await eventSpielfigur(spieler1, zahl);
+      currentplayer("");
     } else {
-      eventSpielfigur(spieler2, zahl);
       currentplayer("Grün");
+      eventSpielfigur(spieler2, zahl);
       console.log("Spieler Grün ist an der Reihe");
       alternation++;
     }
   } else if (selected_players == 3) {
     if (alternation % 3 == 0) {
-      eventSpielfigur(spieler1, zahl);
       currentplayer("Blau");
+      eventSpielfigur(spieler1, zahl);
       console.log("Spieler Blau ist an der Reihe");
       alternation++;
     } else if (alternation % 3 == 1) {
@@ -423,6 +442,34 @@ function alternierend(zahl) {
       console.log("Spieler Rot ist an der Reihe");
       alternation++;
     }
+  }*/
+}
+function getcurrentcolor() {
+  //alternierendes hinzufügen der Funktion eventSpielfigur
+  if (selected_players == 2) {
+    if (alternation % 2 == 0) {
+      return "Blau";
+    } else {
+      return "Grün";
+    }
+  } else if (selected_players == 3) {
+    if (alternation % 3 == 0) {
+      return "Blau";
+    } else if (alternation % 3 == 1) {
+      return "Grün";
+    } else if (alternation % 3 == 2) {
+      return "Gelb";
+    }
+  } else if (selected_players == 4) {
+    if (alternation % 4 == 0) {
+      return "Blau";
+    } else if (alternation % 4 == 1) {
+      return "Grün";
+    } else if (alternation % 4 == 2) {
+      return "Gelb";
+    } else if (alternation % 4 == 3) {
+      return "Rot";
+    }
   }
 }
 const currentheader = document.createElement("h1");
@@ -430,13 +477,14 @@ currentheader.classList.add("sidebar-margin");
 currentheader.innerHTML = "Aktueller Spieler";
 
 let currenttext = document.createElement("p");
+currenttext.textContent = "Spieler Blau ist an der Reihe.";
 currenttext.classList.add("sidebar-margin");
 currenttext.setAttribute("id", "currenttext");
 
 let currentplayer_target = document.getElementById("currentplayer_target");
 
 currentplayer_target.appendChild(currentheader);
-
+currentplayer_target.appendChild(currenttext);
 function currentplayer(playercolor) {
   currenttext.innerHTML = "Spieler " + playercolor + " ist an der Reihe.";
   currentplayer_target.appendChild(currenttext);
@@ -446,18 +494,22 @@ var playerAnzahl = 4;
 var alternation = 0;
 //const selected_players = player_amount.value;
 function eventSpielfigur(spieler, zahl) {
-  const controller = new AbortController();
-  const { signal } = controller;
-  for (let i = 0; i < 4; i++) {
-    spieler[i].addEventListener(
-      "click",
-      () => {
-        movement(zahl, spieler[i], spieler);
-        controller.abort();
-      },
-      { signal }
-    );
-  }
+  return new Promise((resolve) => {
+    const controller = new AbortController();
+    const { signal } = controller;
+    for (let i = 0; i < 4; i++) {
+      spieler[i].addEventListener(
+        "click",
+        () => {
+          console.log("Hi");
+          movement(zahl, spieler[i], spieler);
+          controller.abort();
+          resolve();
+        },
+        { signal }
+      );
+    }
+  });
 }
 async function gültigerMove(zahl,figur,spieler){
      let endziel =figur.momentanePos+zahl;
