@@ -370,7 +370,7 @@ async function movement(zahl,figur,spieler){
             }
         }
     }
-  if(zahl==5 && !figur.home){
+  else if(zahl==5 && !figur.home){
     for(let z=0;z<zahl;z++){
       figur.start=figur.start+1;
       if(figur.start>39){
@@ -381,7 +381,7 @@ async function movement(zahl,figur,spieler){
       await delay(200);
   }
   }
-  if(zahl==4 && !figur.home){
+  else if(zahl==4 && !figur.home){
     for(let z=0;z<zahl;z++){
       figur.start=figur.start+1;
       if(figur.start>39){
@@ -392,7 +392,7 @@ async function movement(zahl,figur,spieler){
       await delay(200);
   }
   }
-  if(zahl==3 && !figur.home){
+  else if(zahl==3 && !figur.home){
     for(let z=0;z<zahl;z++){
       figur.start=figur.start+1;
       if(figur.start>39){
@@ -403,7 +403,7 @@ async function movement(zahl,figur,spieler){
       await delay(200);
   }
   }
-  if(zahl==2 && !figur.home){
+  else if(zahl==2 && !figur.home){
     for(let z=0;z<zahl;z++){
       figur.start=figur.start+1;
       if(figur.start>39){
@@ -414,7 +414,7 @@ async function movement(zahl,figur,spieler){
       await delay(200);
   }
   }
-  if(zahl==1 && !figur.home){
+  else if(zahl==1 && !figur.home){
     for(let z=0;z<1;z++){
       figur.start=figur.start+1;
       if(figur.start>39){
