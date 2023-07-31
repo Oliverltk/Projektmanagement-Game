@@ -270,6 +270,26 @@ gamestart_btn.addEventListener("click", () => {
       console.log(random_number);
       number_result.value = random_number;
       console.log(number_result);
+      switch (random_number) {
+        case 1:
+          alternierend(1);
+          break;
+        case 2:
+          alternierend(2);
+          break;
+        case 3:
+          alternierend(3);
+          break;
+        case 4:
+          alternierend(4);
+          break;
+        case 5:
+          alternierend(5);
+          break;
+        case 6:
+          alternierend(6);
+          break;
+      }
     });
   } else {
     for (let i = 1; i < 7; i++) {
@@ -530,6 +550,3 @@ function createArray() {
 let winner; //Spieler
 let winnertext = document.getElementById("winnertext");
 winnertext.innerHTML = "Gewinner: Spieler " + winner;
-
-
-
