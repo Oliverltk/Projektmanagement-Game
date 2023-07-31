@@ -17,6 +17,7 @@ newgame.addEventListener("click", () => {
 var array;
 var zugrichtung;
 let spieler1, spieler2, spieler3, spieler4;
+let endFeld1, endFeld2, endFeld3, endFeld4;
 newgame.addEventListener("click", () => {
   //einfügen und färben der Spielfelder
   //gameboardCSS.appendChild(createCell(2,2));
@@ -35,9 +36,14 @@ gamestart.addEventListener("click", () => {
   history.pushState({ page: "main-game" }, "");
   selected_players = player_amount.value;
   createGamefield();
+  endFeld1=createZiel1();
+  endFeld2=createZiel2();
+  endFeld3=createZiel3();
+  endFeld4=createZiel4();
   zugrichtung = createArray(); //global scope
   console.log("Spieleranzahl:" + selected_players);
   spielerhinzufuegen(selected_players);
+  console.log(spieler1[2].zielFeld[2].id);
 });
 window.addEventListener("popstate", (event) => {
   console.log(event.state);
@@ -58,7 +64,7 @@ function createCell(row, column) {
   cell.id = column + "cell" + row; //zuerst die X-Achse dann die Y-Achse
   return cell;
 }
-function createSpielfigur(column, row, farbe, startpunkt) {
+function createSpielfigur(column, row, farbe, startpunkt,ziel) {
   let cell = document.createElement("div");
   cell.classList.add("createdcell2");
   cell.style.gridRow = row;
@@ -68,42 +74,83 @@ function createSpielfigur(column, row, farbe, startpunkt) {
   cell.home = true;
   cell.counter = 0;
   cell.start = startpunkt;
+  cell.momentanePos= startpunkt;
   cell.startFeld = zugrichtung[startpunkt];
+  cell.zielFeld = ziel;   //jede Figur hat ein Array mit den Zielfeldern des Spielers
+  cell.zielErreicht=false;
+  cell.startRow=row;
+  cell.startColumn=column;
   return cell;
+}
+function createZiel1(){
+  const zlo = [
+    document.getElementById("2cell6"),
+    document.getElementById("3cell6"),
+    document.getElementById("4cell6"),
+    document.getElementById("5cell6"),
+  ];
+  return zlo;
+}
+function createZiel2(){
+  const zlo = [
+    document.getElementById("10cell6"),
+    document.getElementById("9cell6"),
+    document.getElementById("8cell6"),
+    document.getElementById("7cell6"),
+  ];
+  return zlo;
+}
+function createZiel3(){
+  const zlo = [
+    document.getElementById("6cell2"),
+    document.getElementById("6cell3"),
+    document.getElementById("6cell4"),
+    document.getElementById("6cell5"),
+  ];
+  return zlo;
+}
+function createZiel4(){
+  const zlo = [
+    document.getElementById("6cell10"),
+    document.getElementById("6cell9"),
+    document.getElementById("6cell8"),
+    document.getElementById("6cell7"),
+  ];
+  return zlo;
 }
 function createPlayer1() {
   const spieler1 = [
-    createSpielfigur(1, 1, "blue", 0),
-    createSpielfigur(1, 2, "blue", 0),
-    createSpielfigur(2, 1, "blue", 0),
-    createSpielfigur(2, 2, "blue", 0),
+    createSpielfigur(1, 1, "blue", 0,endFeld1),
+    createSpielfigur(1, 2, "blue", 0,endFeld1),
+    createSpielfigur(2, 1, "blue", 0,endFeld1),
+    createSpielfigur(2, 2, "blue", 0,endFeld1),
   ];
   return spieler1;
 }
 function createPlayer2() {
   const spieler2 = [
-    createSpielfigur(11, 11, "green", 20),
-    createSpielfigur(11, 10, "green", 20),
-    createSpielfigur(10, 11, "green", 20),
-    createSpielfigur(10, 10, "green", 20),
+    createSpielfigur(11, 11, "green", 20,endFeld2),
+    createSpielfigur(11, 10, "green", 20,endFeld2),
+    createSpielfigur(10, 11, "green", 20,endFeld2),
+    createSpielfigur(10, 10, "green", 20,endFeld2),
   ];
   return spieler2;
 }
 function createPlayer3() {
   const spieler3 = [
-    createSpielfigur(11, 1, "yellow", 10),
-    createSpielfigur(11, 2, "yellow", 10),
-    createSpielfigur(10, 1, "yellow", 10),
-    createSpielfigur(10, 2, "yellow", 10),
+    createSpielfigur(11, 1, "yellow", 10,endFeld3),
+    createSpielfigur(11, 2, "yellow", 10,endFeld3),
+    createSpielfigur(10, 1, "yellow", 10,endFeld3),
+    createSpielfigur(10, 2, "yellow", 10,endFeld3),
   ];
   return spieler3;
 }
 function createPlayer4() {
   const spieler4 = [
-    createSpielfigur(1, 11, "red", 30),
-    createSpielfigur(2, 11, "red", 30),
-    createSpielfigur(1, 10, "red", 30),
-    createSpielfigur(2, 10, "red", 30),
+    createSpielfigur(1, 11, "red", 30,endFeld4),
+    createSpielfigur(2, 11, "red", 30,endFeld4),
+    createSpielfigur(1, 10, "red", 30,endFeld4),
+    createSpielfigur(2, 10, "red", 30,endFeld4),
   ];
   return spieler4;
 }
@@ -316,13 +363,10 @@ gamestart_btn.addEventListener("click", () => {
       alternierend(4);
     });
     button5.addEventListener("click", () => {
-      alternierend(5);
+      alternierend(13);
     });
     button6.addEventListener("click", () => {
       alternierend(6);
-      //eventSpielfigur(spieler2,6);
-      //console.log("test1"+document.getElementById(spieler1[1].id).home);
-      //console.log("test2"+spieler1[0].startFeld.style.gridRow);
     });
   }
 });
@@ -415,12 +459,54 @@ function eventSpielfigur(spieler, zahl) {
     );
   }
 }
+async function gültigerMove(zahl,figur,spieler){
+     let endziel =figur.momentanePos+zahl;
+    if(endziel<40){
+    let finalRow=zugrichtung[endziel].style.gridRow;
+    let finalColumn=zugrichtung[endziel].style.gridColumn;
+    for(let i=0;i<4;i++){
+      if(finalRow==spieler1[i].style.gridRow && finalColumn==spieler1[i].style.gridColumn ){
+        console.log("Ich schlage deine Blaue Figur");
+        schlageFigur(zahl,spieler1[i]);
+      }
+      else if(finalRow==spieler2[i].style.gridRow && finalColumn==spieler2[i].style.gridColumn ){
+        console.log("Ich schlage deine Grüne Figur");
+        schlageFigur(zahl,spieler2[i]);
+      }
+      else if(selected_players==3 || selected_players==4){  //out of bounds Fehler verhindern
+      if(finalRow==spieler3[i].style.gridRow && finalColumn==spieler3[i].style.gridColumn ){
+        console.log("Ich schlage deine Gelbe Figur");
+        await delay(zahl*180);
+        spieler3[i].style.gridRow=spieler3[i].startRow;
+        spieler3[i].style.gridColumn=spieler3[i].startColumn;
+      }
+    }
+    else if(selected_players==4){  //out of bounds Fehler verhindern
+      if(finalRow==spieler4[i].style.gridRow && finalColumn==spieler4[i].style.gridColumn ){
+        console.log("Ich schlage deine Rote Figur");
+        await delay(zahl*200);
+        spieler4[i].style.gridRow=spieler4[i].startRow;
+        spieler4[i].style.gridColumn=spieler4[i].startColumn;
+      }
+    }
+    }
+  }
+}
+async function schlageFigur(zahl,spielfigur){
+  await delay(zahl*200);
+        spielfigur.style.gridRow=spielfigur.startRow;
+        spielfigur.style.gridColumn=spielfigur.startColumn;
+        spielfigur.counter=0;
+        spielfigur.home=true;
+        spielfigur.momentanePos=spielfigur.start;
+}
 async function movement(zahl, figur, spieler) {
-  if (zahl == 6) {
-    //falls 6 gewürfelt wurde, figur raussstellen
-    if (figur.home) {
+  if(!figur.home){
+    gültigerMove(zahl,figur,spieler);
+  }
+    if (figur.home && zahl==6) {
       var occupied = false;
-      for (let i = 0; i < 4; i++) {
+      for (let i = 0; i < 4; i++) {   //prüft ob auf dem startfeld schon eine Figur steht
         if (
           spieler[i].style.gridRow == spieler[i].startFeld.style.gridRow &&
           spieler[i].style.gridColumn == spieler[i].startFeld.style.gridColumn
@@ -433,69 +519,30 @@ async function movement(zahl, figur, spieler) {
         figur.style.gridColumn = figur.startFeld.style.gridColumn;
         figur.home = false;
       }
-    } else {
-      //zähler hochzählen
-      for (let z = 0; z < 6; z++) {
-        figur.start = figur.start + 1;
-        if (figur.start > 39) {
-          figur.start = 0;
+    } else if(!figur.home){
+      for (let z = 0; z < zahl; z++) {
+        figur.momentanePos = figur.momentanePos + 1;
+        figur.counter++;
+        if (figur.momentanePos > 39) {
+          figur.momentanePos = 0;
         }
-        figur.style.gridRow = zugrichtung[figur.start].style.gridRow;
-        figur.style.gridColumn = zugrichtung[figur.start].style.gridColumn;
-        await delay(200);
+        if(figur.counter<40){
+        figur.style.gridRow = zugrichtung[figur.momentanePos].style.gridRow;
+        figur.style.gridColumn = zugrichtung[figur.momentanePos].style.gridColumn;
+        await delay(100);
+      } else if(figur.counter<44 && figur.counter>39){
+        figur.zielErreicht=true;
+        figur.style.gridRow = figur.zielFeld[figur.counter-40].style.gridRow;
+        figur.style.gridColumn = figur.zielFeld[figur.counter-40].style.gridColumn;
+        await delay(100);
+      }
       }
     }
-  } else if (zahl == 5 && !figur.home) {
-    for (let z = 0; z < zahl; z++) {
-      figur.start = figur.start + 1;
-      if (figur.start > 39) {
-        figur.start = 0;
-      }
-      figur.style.gridRow = zugrichtung[figur.start].style.gridRow;
-      figur.style.gridColumn = zugrichtung[figur.start].style.gridColumn;
-      await delay(200);
+    if (spieler[0].zielErreicht && spieler[1].zielErreicht && spieler[2].zielErreicht && spieler[3].zielErreicht){
+      console.log("Das Spiel wurde gewonnen!");
+      //Currentplayer als Variable anlegen und hier Currentplayer ausgeben
     }
-  } else if (zahl == 4 && !figur.home) {
-    for (let z = 0; z < zahl; z++) {
-      figur.start = figur.start + 1;
-      if (figur.start > 39) {
-        figur.start = 0;
-      }
-      figur.style.gridRow = zugrichtung[figur.start].style.gridRow;
-      figur.style.gridColumn = zugrichtung[figur.start].style.gridColumn;
-      await delay(200);
-    }
-  } else if (zahl == 3 && !figur.home) {
-    for (let z = 0; z < zahl; z++) {
-      figur.start = figur.start + 1;
-      if (figur.start > 39) {
-        figur.start = 0;
-      }
-      figur.style.gridRow = zugrichtung[figur.start].style.gridRow;
-      figur.style.gridColumn = zugrichtung[figur.start].style.gridColumn;
-      await delay(200);
-    }
-  } else if (zahl == 2 && !figur.home) {
-    for (let z = 0; z < zahl; z++) {
-      figur.start = figur.start + 1;
-      if (figur.start > 39) {
-        figur.start = 0;
-      }
-      figur.style.gridRow = zugrichtung[figur.start].style.gridRow;
-      figur.style.gridColumn = zugrichtung[figur.start].style.gridColumn;
-      await delay(200);
-    }
-  } else if (zahl == 1 && !figur.home) {
-    for (let z = 0; z < 1; z++) {
-      figur.start = figur.start + 1;
-      if (figur.start > 39) {
-        figur.start = 0;
-      }
-      figur.style.gridRow = zugrichtung[figur.start].style.gridRow;
-      figur.style.gridColumn = zugrichtung[figur.start].style.gridColumn;
-      await delay(200);
-    }
-  }
+    
 }
 const player_amount = document.getElementById("player-amount");
 let selected_players = player_amount.value;
