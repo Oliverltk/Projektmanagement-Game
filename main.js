@@ -501,7 +501,7 @@ function eventSpielfigur(spieler, zahl) {
       spieler[i].addEventListener(
         "click",
         () => {
-          console.log("Hi");
+          console.log("Hi");   //hier prüfen ob die bewegung überhaupt möglich
           movement(zahl, spieler[i], spieler);
           controller.abort();
           resolve();
