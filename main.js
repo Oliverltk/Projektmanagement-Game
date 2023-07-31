@@ -33,6 +33,7 @@ const gamestart = document.getElementById("gamestart-btn");
 gamestart.addEventListener("click", () => {
   showpage("main-game");
   history.pushState({ page: "main-game" }, "");
+  selected_players = player_amount.value;
   createGamefield();
   zugrichtung = createArray();   //global scope
   console.log("Spieleranzahl:"+selected_players);
@@ -427,7 +428,7 @@ async function movement(zahl,figur,spieler){
   }
 }
 const player_amount = document.getElementById("player-amount");
-const selected_players = player_amount.value;
+let selected_players = player_amount.value;
 
 function delay(milliseconds){   // delay Funktion wird mit "await delay(ms)" benutzt
     return new Promise(resolve => {
