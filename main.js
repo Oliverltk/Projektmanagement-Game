@@ -1,5 +1,5 @@
 import "https://unpkg.com/@material/web@1.0.0-pre.13/switch/switch.js?module";
-window.addEventListener("DOMContentLoaded", () => {
+/*window.addEventListener("DOMContentLoaded", () => {
   const startnumber = document.getElementById("start-number");
   for (let i = 1; i < 7; i++) {
     let number = document.createElement("option");
@@ -7,10 +7,10 @@ window.addEventListener("DOMContentLoaded", () => {
     startnumber.appendChild(number);
   }
 });
-
+*/
 //Control visibility of sections
-const newgame = document.getElementById("new-btn");
-newgame.addEventListener("click", () => {
+const newgame_btn = document.getElementById("new-btn");
+newgame_btn.addEventListener("click", () => {
   showpage("new-game");
   history.pushState({ page: "new-game" }, "");
 });
@@ -18,7 +18,7 @@ var array;
 var zugrichtung;
 let spieler1, spieler2, spieler3, spieler4;
 let endFeld1, endFeld2, endFeld3, endFeld4;
-newgame.addEventListener("click", () => {
+newgame_btn.addEventListener("click", () => {
   //einfügen und färben der Spielfelder
   //gameboardCSS.appendChild(createCell(2,2));
   //createGamefield();
@@ -30,20 +30,32 @@ gamerules.addEventListener("click", () => {
   showpage("game-rules");
   history.pushState({ page: "game-rules" }, "");
 });
-const gamestart = document.getElementById("gamestart-btn");
-gamestart.addEventListener("click", () => {
-  showpage("main-game");
-  history.pushState({ page: "main-game" }, "");
-  selected_players = player_amount.value;
-  createGamefield();
-  endFeld1=createZiel1();
-  endFeld2=createZiel2();
-  endFeld3=createZiel3();
-  endFeld4=createZiel4();
-  zugrichtung = createArray(); //global scope
-  console.log("Spieleranzahl:" + selected_players);
-  spielerhinzufuegen(selected_players);
-  console.log(spieler1[2].zielFeld[2].id);
+const newgame = document.getElementById("new-game");
+const gamestart_btn = document.getElementById("gamestart-btn");
+gamestart_btn.disabled = false;
+gamestart_btn.addEventListener("click", () => {
+  if (player_amount.value == "default") {
+    player_amount.style.border = "2px solid red";
+    let error = document.createElement("span");
+    error.style.color = "red";
+    error.innerHTML = "Bitte Spieleranzahl wählen";
+    newgame.appendChild(error);
+  } else {
+    gamestart_btn.disabled = true;
+    showpage("main-game");
+    history.pushState({ page: "main-game" }, "");
+    selected_players = player_amount.value;
+    createdice();
+    createGamefield();
+    endFeld1 = createZiel1();
+    endFeld2 = createZiel2();
+    endFeld3 = createZiel3();
+    endFeld4 = createZiel4();
+    zugrichtung = createArray(); //global scope
+    console.log("Spieleranzahl:" + selected_players);
+    spielerhinzufuegen(selected_players);
+    console.log(spieler1[2].zielFeld[2].id);
+  }
 });
 window.addEventListener("popstate", (event) => {
   console.log(event.state);
@@ -64,7 +76,7 @@ function createCell(row, column) {
   cell.id = column + "cell" + row; //zuerst die X-Achse dann die Y-Achse
   return cell;
 }
-function createSpielfigur(column, row, farbe, startpunkt,ziel) {
+function createSpielfigur(column, row, farbe, startpunkt, ziel) {
   let cell = document.createElement("div");
   cell.classList.add("createdcell2");
   cell.style.gridRow = row;
@@ -74,15 +86,15 @@ function createSpielfigur(column, row, farbe, startpunkt,ziel) {
   cell.home = true;
   cell.counter = 0;
   cell.start = startpunkt;
-  cell.momentanePos= startpunkt;
+  cell.momentanePos = startpunkt;
   cell.startFeld = zugrichtung[startpunkt];
-  cell.zielFeld = ziel;   //jede Figur hat ein Array mit den Zielfeldern des Spielers
-  cell.zielErreicht=false;
-  cell.startRow=row;
-  cell.startColumn=column;
+  cell.zielFeld = ziel; //jede Figur hat ein Array mit den Zielfeldern des Spielers
+  cell.zielErreicht = false;
+  cell.startRow = row;
+  cell.startColumn = column;
   return cell;
 }
-function createZiel1(){
+function createZiel1() {
   const zlo = [
     document.getElementById("2cell6"),
     document.getElementById("3cell6"),
@@ -91,7 +103,7 @@ function createZiel1(){
   ];
   return zlo;
 }
-function createZiel2(){
+function createZiel2() {
   const zlo = [
     document.getElementById("10cell6"),
     document.getElementById("9cell6"),
@@ -100,7 +112,7 @@ function createZiel2(){
   ];
   return zlo;
 }
-function createZiel3(){
+function createZiel3() {
   const zlo = [
     document.getElementById("6cell2"),
     document.getElementById("6cell3"),
@@ -109,7 +121,7 @@ function createZiel3(){
   ];
   return zlo;
 }
-function createZiel4(){
+function createZiel4() {
   const zlo = [
     document.getElementById("6cell10"),
     document.getElementById("6cell9"),
@@ -120,37 +132,37 @@ function createZiel4(){
 }
 function createPlayer1() {
   const spieler1 = [
-    createSpielfigur(1, 1, "blue", 0,endFeld1),
-    createSpielfigur(1, 2, "blue", 0,endFeld1),
-    createSpielfigur(2, 1, "blue", 0,endFeld1),
-    createSpielfigur(2, 2, "blue", 0,endFeld1),
+    createSpielfigur(1, 1, "blue", 0, endFeld1),
+    createSpielfigur(1, 2, "blue", 0, endFeld1),
+    createSpielfigur(2, 1, "blue", 0, endFeld1),
+    createSpielfigur(2, 2, "blue", 0, endFeld1),
   ];
   return spieler1;
 }
 function createPlayer2() {
   const spieler2 = [
-    createSpielfigur(11, 11, "green", 20,endFeld2),
-    createSpielfigur(11, 10, "green", 20,endFeld2),
-    createSpielfigur(10, 11, "green", 20,endFeld2),
-    createSpielfigur(10, 10, "green", 20,endFeld2),
+    createSpielfigur(11, 11, "green", 20, endFeld2),
+    createSpielfigur(11, 10, "green", 20, endFeld2),
+    createSpielfigur(10, 11, "green", 20, endFeld2),
+    createSpielfigur(10, 10, "green", 20, endFeld2),
   ];
   return spieler2;
 }
 function createPlayer3() {
   const spieler3 = [
-    createSpielfigur(11, 1, "yellow", 10,endFeld3),
-    createSpielfigur(11, 2, "yellow", 10,endFeld3),
-    createSpielfigur(10, 1, "yellow", 10,endFeld3),
-    createSpielfigur(10, 2, "yellow", 10,endFeld3),
+    createSpielfigur(11, 1, "yellow", 10, endFeld3),
+    createSpielfigur(11, 2, "yellow", 10, endFeld3),
+    createSpielfigur(10, 1, "yellow", 10, endFeld3),
+    createSpielfigur(10, 2, "yellow", 10, endFeld3),
   ];
   return spieler3;
 }
 function createPlayer4() {
   const spieler4 = [
-    createSpielfigur(1, 11, "red", 30,endFeld4),
-    createSpielfigur(2, 11, "red", 30,endFeld4),
-    createSpielfigur(1, 10, "red", 30,endFeld4),
-    createSpielfigur(2, 10, "red", 30,endFeld4),
+    createSpielfigur(1, 11, "red", 30, endFeld4),
+    createSpielfigur(2, 11, "red", 30, endFeld4),
+    createSpielfigur(1, 10, "red", 30, endFeld4),
+    createSpielfigur(2, 10, "red", 30, endFeld4),
   ];
   return spieler4;
 }
@@ -300,14 +312,15 @@ dice_target.appendChild(header);
 
 let random_number = null;
 
-const gamestart_btn = document.getElementById("gamestart-btn");
-gamestart_btn.disabled = false;
-gamestart_btn.addEventListener("click", () => {
-  gamestart_btn.disabled = true;
+/*const gamestart_btn = document.getElementById("gamestart-btn");*/
+
+let number_result = document.createElement("input");
+number_result.type = "number";
+number_result.classList.add("sidebar-margin");
+
+function createdice() {
   if (dice_btn.selected) {
-    let number_result = document.createElement("input");
-    number_result.type = "number";
-    number_result.classList.add("sidebar-margin");
+    number_result.readOnly = true;
     let linebreak = document.createElement("br");
     const start_dice = document.createElement("button");
     start_dice.classList.add("sidebar-margin");
@@ -316,6 +329,7 @@ gamestart_btn.addEventListener("click", () => {
     dice_target.appendChild(linebreak);
     dice_target.appendChild(start_dice);
     start_dice.addEventListener("click", () => {
+      start_dice.disabled = true;
       console.log("click");
       random_number = parseInt(Math.random() * 6) + 1;
       console.log(random_number);
@@ -323,21 +337,33 @@ gamestart_btn.addEventListener("click", () => {
       console.log(number_result);
       switch (random_number) {
         case 1:
+          start_dice.disabled = false;
+          diceinfo.textContent = "Aktuell gewürfelte Zahl: 1";
           alternierend(1);
           break;
         case 2:
+          start_dice.disabled = false;
+          diceinfo.textContent = "Aktuell gewürfelte Zahl: 2";
           alternierend(2);
           break;
         case 3:
+          start_dice.disabled = false;
+          diceinfo.textContent = "Aktuell gewürfelte Zahl: 3";
           alternierend(3);
           break;
         case 4:
+          start_dice.disabled = false;
+          diceinfo.textContent = "Aktuell gewürfelte Zahl: 4";
           alternierend(4);
           break;
         case 5:
+          start_dice.disabled = false;
+          diceinfo.textContent = "Aktuell gewürfelte Zahl: 5";
           alternierend(5);
           break;
         case 6:
+          start_dice.disabled = false;
+          diceinfo.textContent = "Aktuell gewürfelte Zahl: 6";
           alternierend(6);
           break;
       }
@@ -351,39 +377,49 @@ gamestart_btn.addEventListener("click", () => {
       dice_target.appendChild(number_btn);
     }
     button1.addEventListener("click", () => {
+      diceinfo.innerHTML = "Aktuell gewürfelte Zahl: " + number_result.value;
       alternierend(1);
     });
     button2.addEventListener("click", () => {
+      diceinfo.innerHTML = "Aktuell gewürfelte Zahl: " + number_result.value;
       alternierend(2);
     });
     button3.addEventListener("click", () => {
+      diceinfo.innerHTML = "Aktuell gewürfelte Zahl: " + number_result.value;
       alternierend(3);
     });
     button4.addEventListener("click", () => {
+      diceinfo.innerHTML = "Aktuell gewürfelte Zahl: " + number_result.value;
       alternierend(4);
     });
     button5.addEventListener("click", () => {
+      diceinfo.innerHTML = "Aktuell gewürfelte Zahl: " + number_result.value;
       alternierend(13);
     });
     button6.addEventListener("click", () => {
+      diceinfo.innerHTML = "Aktuell gewürfelte Zahl: " + number_result.value;
       alternierend(6);
     });
   }
-});
+}
+
 async function alternierend(zahl) {
-  
   switch (getcurrentcolor()) {
     case "Blau":
       await eventSpielfigur(spieler1, zahl);
+      number_result.value = "";
       break;
     case "Grün":
       await eventSpielfigur(spieler2, zahl);
+      number_result.value = "";
       break;
     case "Gelb":
       await eventSpielfigur(spieler3, zahl);
+      number_result.value = "";
       break;
     case "Rot":
       await eventSpielfigur(spieler4, zahl);
+      number_result.value = "";
       break;
   }
   alternation++;
@@ -474,7 +510,7 @@ function getcurrentcolor() {
 }
 const currentheader = document.createElement("h1");
 currentheader.classList.add("sidebar-margin");
-currentheader.innerHTML = "Aktueller Spieler";
+currentheader.textContent = "Aktueller Spieler";
 
 let currenttext = document.createElement("p");
 currenttext.textContent = "Spieler Blau ist an der Reihe.";
@@ -483,10 +519,34 @@ currenttext.setAttribute("id", "currenttext");
 
 let currentplayer_target = document.getElementById("currentplayer_target");
 
+let gameinfo = document.createElement("h1");
+gameinfo.classList.add("sidebar-margin");
+gameinfo.textContent = "Spielinfo";
+
+let diceinfo = document.createElement("p");
+diceinfo.classList.add("sidebar-margin");
+diceinfo.textContent = "Aktuell gewürfelte Zahl: ";
+
 currentplayer_target.appendChild(currentheader);
 currentplayer_target.appendChild(currenttext);
+
+let sidebar = document.getElementById("sidebar");
 function currentplayer(playercolor) {
   currenttext.innerHTML = "Spieler " + playercolor + " ist an der Reihe.";
+  switch (playercolor) {
+    case "Blau":
+      sidebar.style.backgroundColor = "#6495ed";
+      break;
+    case "Grün":
+      sidebar.style.backgroundColor = "#90ee90";
+      break;
+    case "Gelb":
+      sidebar.style.backgroundColor = "#fcf75e";
+      break;
+    case "Rot":
+      sidebar.style.backgroundColor = "#fa8072";
+      break;
+  }
   currentplayer_target.appendChild(currenttext);
 }
 
@@ -501,7 +561,7 @@ function eventSpielfigur(spieler, zahl) {
       spieler[i].addEventListener(
         "click",
         () => {
-          console.log("Hi");   //hier prüfen ob die bewegung überhaupt möglich
+          console.log("Hi"); //hier prüfen ob die bewegung überhaupt möglich
           movement(zahl, spieler[i], spieler);
           controller.abort();
           resolve();
@@ -511,90 +571,112 @@ function eventSpielfigur(spieler, zahl) {
     }
   });
 }
-async function gültigerMove(zahl,figur,spieler){
-     let endziel =figur.momentanePos+zahl;
-    if(endziel<40){
-    let finalRow=zugrichtung[endziel].style.gridRow;
-    let finalColumn=zugrichtung[endziel].style.gridColumn;
-    for(let i=0;i<4;i++){
-      if(finalRow==spieler1[i].style.gridRow && finalColumn==spieler1[i].style.gridColumn ){
+async function gültigerMove(zahl, figur, spieler) {
+  let endziel = figur.momentanePos + zahl;
+  if (endziel < 40) {
+    let finalRow = zugrichtung[endziel].style.gridRow;
+    let finalColumn = zugrichtung[endziel].style.gridColumn;
+    for (let i = 0; i < 4; i++) {
+      if (
+        finalRow == spieler1[i].style.gridRow &&
+        finalColumn == spieler1[i].style.gridColumn
+      ) {
         console.log("Ich schlage deine Blaue Figur");
-        schlageFigur(zahl,spieler1[i]);
-      }
-      else if(finalRow==spieler2[i].style.gridRow && finalColumn==spieler2[i].style.gridColumn ){
+        schlageFigur(zahl, spieler1[i]);
+      } else if (
+        finalRow == spieler2[i].style.gridRow &&
+        finalColumn == spieler2[i].style.gridColumn
+      ) {
         console.log("Ich schlage deine Grüne Figur");
-        schlageFigur(zahl,spieler2[i]);
+        schlageFigur(zahl, spieler2[i]);
+      } else if (selected_players == 3 || selected_players == 4) {
+        //out of bounds Fehler verhindern
+        if (
+          finalRow == spieler3[i].style.gridRow &&
+          finalColumn == spieler3[i].style.gridColumn
+        ) {
+          console.log("Ich schlage deine Gelbe Figur");
+          await delay(zahl * 180);
+          spieler3[i].style.gridRow = spieler3[i].startRow;
+          spieler3[i].style.gridColumn = spieler3[i].startColumn;
+        }
+      } else if (selected_players == 4) {
+        //out of bounds Fehler verhindern
+        if (
+          finalRow == spieler4[i].style.gridRow &&
+          finalColumn == spieler4[i].style.gridColumn
+        ) {
+          console.log("Ich schlage deine Rote Figur");
+          await delay(zahl * 200);
+          spieler4[i].style.gridRow = spieler4[i].startRow;
+          spieler4[i].style.gridColumn = spieler4[i].startColumn;
+        }
       }
-      else if(selected_players==3 || selected_players==4){  //out of bounds Fehler verhindern
-      if(finalRow==spieler3[i].style.gridRow && finalColumn==spieler3[i].style.gridColumn ){
-        console.log("Ich schlage deine Gelbe Figur");
-        await delay(zahl*180);
-        spieler3[i].style.gridRow=spieler3[i].startRow;
-        spieler3[i].style.gridColumn=spieler3[i].startColumn;
-      }
-    }
-    else if(selected_players==4){  //out of bounds Fehler verhindern
-      if(finalRow==spieler4[i].style.gridRow && finalColumn==spieler4[i].style.gridColumn ){
-        console.log("Ich schlage deine Rote Figur");
-        await delay(zahl*200);
-        spieler4[i].style.gridRow=spieler4[i].startRow;
-        spieler4[i].style.gridColumn=spieler4[i].startColumn;
-      }
-    }
     }
   }
 }
-async function schlageFigur(zahl,spielfigur){
-  await delay(zahl*200);
-        spielfigur.style.gridRow=spielfigur.startRow;
-        spielfigur.style.gridColumn=spielfigur.startColumn;
-        spielfigur.counter=0;
-        spielfigur.home=true;
-        spielfigur.momentanePos=spielfigur.start;
+async function schlageFigur(zahl, spielfigur) {
+  await delay(zahl * 200);
+  spielfigur.style.gridRow = spielfigur.startRow;
+  spielfigur.style.gridColumn = spielfigur.startColumn;
+  spielfigur.counter = 0;
+  spielfigur.home = true;
+  spielfigur.momentanePos = spielfigur.start;
 }
 async function movement(zahl, figur, spieler) {
-  if(!figur.home){
-    gültigerMove(zahl,figur,spieler);
+  if (!figur.home) {
+    gültigerMove(zahl, figur, spieler);
   }
-    if (figur.home && zahl==6) {
-      var occupied = false;
-      for (let i = 0; i < 4; i++) {   //prüft ob auf dem startfeld schon eine Figur steht
-        if (
-          spieler[i].style.gridRow == spieler[i].startFeld.style.gridRow &&
-          spieler[i].style.gridColumn == spieler[i].startFeld.style.gridColumn
-        ) {
-          occupied = true;
-        }
+  if (figur.home && zahl == 6) {
+    var occupied = false;
+    for (let i = 0; i < 4; i++) {
+      //prüft ob auf dem startfeld schon eine Figur steht
+      if (
+        spieler[i].style.gridRow == spieler[i].startFeld.style.gridRow &&
+        spieler[i].style.gridColumn == spieler[i].startFeld.style.gridColumn
+      ) {
+        occupied = true;
       }
-      if (!occupied && figur.home) {
-        figur.style.gridRow = figur.startFeld.style.gridRow;
-        figur.style.gridColumn = figur.startFeld.style.gridColumn;
-        figur.home = false;
+    }
+    if (!occupied && figur.home) {
+      figur.style.gridRow = figur.startFeld.style.gridRow;
+      figur.style.gridColumn = figur.startFeld.style.gridColumn;
+      figur.home = false;
+    }
+  } else if (!figur.home) {
+    for (let z = 0; z < zahl; z++) {
+      figur.momentanePos = figur.momentanePos + 1;
+      figur.counter++;
+      if (figur.momentanePos > 39) {
+        figur.momentanePos = 0;
       }
-    } else if(!figur.home){
-      for (let z = 0; z < zahl; z++) {
-        figur.momentanePos = figur.momentanePos + 1;
-        figur.counter++;
-        if (figur.momentanePos > 39) {
-          figur.momentanePos = 0;
-        }
-        if(figur.counter<40){
+      if (figur.counter < 40) {
         figur.style.gridRow = zugrichtung[figur.momentanePos].style.gridRow;
-        figur.style.gridColumn = zugrichtung[figur.momentanePos].style.gridColumn;
+        figur.style.gridColumn =
+          zugrichtung[figur.momentanePos].style.gridColumn;
         await delay(100);
-      } else if(figur.counter<44 && figur.counter>39){
-        figur.zielErreicht=true;
-        figur.style.gridRow = figur.zielFeld[figur.counter-40].style.gridRow;
-        figur.style.gridColumn = figur.zielFeld[figur.counter-40].style.gridColumn;
+      } else if (figur.counter < 44 && figur.counter > 39) {
+        figur.zielErreicht = true;
+        figur.style.gridRow = figur.zielFeld[figur.counter - 40].style.gridRow;
+        figur.style.gridColumn =
+          figur.zielFeld[figur.counter - 40].style.gridColumn;
         await delay(100);
       }
-      }
     }
-    if (spieler[0].zielErreicht && spieler[1].zielErreicht && spieler[2].zielErreicht && spieler[3].zielErreicht){
-      console.log("Das Spiel wurde gewonnen!");
-      //Currentplayer als Variable anlegen und hier Currentplayer ausgeben
-    }
-    
+  }
+  if (
+    spieler[0].zielErreicht &&
+    spieler[1].zielErreicht &&
+    spieler[2].zielErreicht &&
+    spieler[3].zielErreicht
+  ) {
+    console.log("Das Spiel wurde gewonnen!");
+    //Currentplayer als Variable anlegen und hier Currentplayer ausgeben
+    document.getElementById("main-game").classList.add("invisible");
+    document.getElementById("endscreen").classList.remove("invisible");
+    document.getElementById("winnertext").innerHTML =
+      "Gewinner: Spieler " + spieler[0].style.backgroundColor;
+  }
 }
 const player_amount = document.getElementById("player-amount");
 let selected_players = player_amount.value;

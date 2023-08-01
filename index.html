@@ -33,7 +33,7 @@
         >
       </button>
     </div>
-    <div class="new-game invisible">
+    <div class="new-game invisible" id="new-game">
       <h1>Neues Spiel</h1>
       <select name="players" class="select-menu" id="player-amount">
         <option value="default" selected disabled hidden>Spieleranzahl</option>
@@ -45,9 +45,11 @@
         <label class="switch"> <md-switch></md-switch> </label>&nbsp;Virtueller
         Würfel
       </button>
+      <!--
       <select name="eye-number" class="select-menu" id="start-number">
         <option value="default" selected disabled hidden>Augenzahl</option>
       </select>
+      -->
       <button class="button" id="gamestart-btn">Spiel starten</button>
     </div>
     <div class="game-rules invisible" id="gamerules"></div>
@@ -65,7 +67,13 @@
     <div class="endscreen invisible" id="endscreen">
       <h1>Spielende</h1>
       <p class="winnertext" id="winnertext"></p>
-      <button class="button" id="backtomenu" onclick="window.location.reload();">Hauptmenü</button>
+      <button
+        class="button"
+        id="backtomenu"
+        onclick="window.location.reload();"
+      >
+        Hauptmenü
+      </button>
       <button class="button" id="backtonewgame">Erneut spielen</button>
     </div>
   </body>
