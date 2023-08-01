@@ -9,7 +9,8 @@ body {
   overflow: hidden;
 }
 .main-menu,
-.new-game {
+.new-game,
+.endscreen {
   margin: auto;
   width: 50vh;
   height: 50vh;
@@ -116,4 +117,10 @@ body {
 }
 .sidebar-margin {
   margin-left: 10px;
+}
+md-filled-text-field {
+  height: 45px;
+}
+md-elevated-button {
+  margin-top: 10px;
 }

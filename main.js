@@ -1,4 +1,6 @@
-import "https://unpkg.com/@material/web@1.0.0-pre.13/switch/switch.js?module";
+import "https://unpkg.com/@material/web@1.0.0-pre.14/switch/switch.js?module";
+import "https://unpkg.com/@material/web@1.0.0-pre.14/textfield/filled-text-field.js?module";
+import "https://unpkg.com/@material/web@1.0.0-pre.14/button/elevated-button.js?module";
 /*window.addEventListener("DOMContentLoaded", () => {
   const startnumber = document.getElementById("start-number");
   for (let i = 1; i < 7; i++) {
@@ -314,7 +316,7 @@ let random_number = null;
 
 /*const gamestart_btn = document.getElementById("gamestart-btn");*/
 
-let number_result = document.createElement("input");
+let number_result = document.createElement("md-filled-text-field");
 number_result.type = "number";
 number_result.classList.add("sidebar-margin");
 
@@ -322,7 +324,7 @@ function createdice() {
   if (dice_btn.selected) {
     number_result.readOnly = true;
     let linebreak = document.createElement("br");
-    const start_dice = document.createElement("button");
+    const start_dice = document.createElement("md-elevated-button");
     start_dice.classList.add("sidebar-margin");
     start_dice.innerHTML = "Neue Zahl";
     dice_target.appendChild(number_result);
@@ -335,38 +337,9 @@ function createdice() {
       console.log(random_number);
       number_result.value = random_number;
       console.log(number_result);
-      switch (random_number) {
-        case 1:
-          start_dice.disabled = false;
-          diceinfo.textContent = "Aktuell gewürfelte Zahl: 1";
-          alternierend(1);
-          break;
-        case 2:
-          start_dice.disabled = false;
-          diceinfo.textContent = "Aktuell gewürfelte Zahl: 2";
-          alternierend(2);
-          break;
-        case 3:
-          start_dice.disabled = false;
-          diceinfo.textContent = "Aktuell gewürfelte Zahl: 3";
-          alternierend(3);
-          break;
-        case 4:
-          start_dice.disabled = false;
-          diceinfo.textContent = "Aktuell gewürfelte Zahl: 4";
-          alternierend(4);
-          break;
-        case 5:
-          start_dice.disabled = false;
-          diceinfo.textContent = "Aktuell gewürfelte Zahl: 5";
-          alternierend(5);
-          break;
-        case 6:
-          start_dice.disabled = false;
-          diceinfo.textContent = "Aktuell gewürfelte Zahl: 6";
-          alternierend(6);
-          break;
-      }
+      alternierend(random_number);
+      start_dice.disabled = false;
+      diceinfo.textContent = "Aktuell gewürfelte Zahl: " + number_result.value;
     });
   } else {
     for (let i = 1; i < 7; i++) {
@@ -377,27 +350,27 @@ function createdice() {
       dice_target.appendChild(number_btn);
     }
     button1.addEventListener("click", () => {
-      diceinfo.innerHTML = "Aktuell gewürfelte Zahl: " + number_result.value;
+      diceinfo.textContent = "Aktuell gewürfelte Zahl: 1";
       alternierend(1);
     });
     button2.addEventListener("click", () => {
-      diceinfo.innerHTML = "Aktuell gewürfelte Zahl: " + number_result.value;
+      diceinfo.textContent = "Aktuell gewürfelte Zahl: 2";
       alternierend(2);
     });
     button3.addEventListener("click", () => {
-      diceinfo.innerHTML = "Aktuell gewürfelte Zahl: " + number_result.value;
+      diceinfo.textContent = "Aktuell gewürfelte Zahl: 3";
       alternierend(3);
     });
     button4.addEventListener("click", () => {
-      diceinfo.innerHTML = "Aktuell gewürfelte Zahl: " + number_result.value;
+      diceinfo.textContent = "Aktuell gewürfelte Zahl: 4";
       alternierend(4);
     });
     button5.addEventListener("click", () => {
-      diceinfo.innerHTML = "Aktuell gewürfelte Zahl: " + number_result.value;
-      alternierend(13);
+      diceinfo.textContent = "Aktuell gewürfelte Zahl: 5";
+      alternierend(5);
     });
     button6.addEventListener("click", () => {
-      diceinfo.innerHTML = "Aktuell gewürfelte Zahl: " + number_result.value;
+      diceinfo.textContent = "Aktuell gewürfelte Zahl: 6";
       alternierend(6);
     });
   }
@@ -407,78 +380,22 @@ async function alternierend(zahl) {
   switch (getcurrentcolor()) {
     case "Blau":
       await eventSpielfigur(spieler1, zahl);
-      number_result.value = "";
       break;
     case "Grün":
       await eventSpielfigur(spieler2, zahl);
-      number_result.value = "";
       break;
     case "Gelb":
       await eventSpielfigur(spieler3, zahl);
-      number_result.value = "";
       break;
     case "Rot":
       await eventSpielfigur(spieler4, zahl);
-      number_result.value = "";
       break;
   }
+  number_result.value = "";
+  diceinfo.textContent = "Aktuell gewürfelte Zahl:";
   alternation++;
 
   currentplayer(getcurrentcolor());
-  /*
-  //alternierendes hinzufügen der Funktion eventSpielfigur
-  if (selected_players == 2) {
-    if (alternation % 2 == 0) {
-      console.log("Spieler Blau ist an der Reihe");
-      alternation++;
-      await eventSpielfigur(spieler1, zahl);
-      currentplayer("");
-    } else {
-      currentplayer("Grün");
-      eventSpielfigur(spieler2, zahl);
-      console.log("Spieler Grün ist an der Reihe");
-      alternation++;
-    }
-  } else if (selected_players == 3) {
-    if (alternation % 3 == 0) {
-      currentplayer("Blau");
-      eventSpielfigur(spieler1, zahl);
-      console.log("Spieler Blau ist an der Reihe");
-      alternation++;
-    } else if (alternation % 3 == 1) {
-      eventSpielfigur(spieler2, zahl);
-      currentplayer("Grün");
-      console.log("Spieler Grün ist an der Reihe");
-      alternation++;
-    } else if (alternation % 3 == 2) {
-      eventSpielfigur(spieler3, zahl);
-      currentplayer("Gelb");
-      console.log("Spieler Gelb ist an der Reihe");
-      alternation++;
-    }
-  } else if (selected_players == 4) {
-    if (alternation % 4 == 0) {
-      eventSpielfigur(spieler1, zahl);
-      currentplayer("Blau");
-      console.log("Spieler Blau ist an der Reihe");
-      alternation++;
-    } else if (alternation % 4 == 1) {
-      eventSpielfigur(spieler2, zahl);
-      currentplayer("Grün");
-      console.log("Spieler Grün ist an der Reihe");
-      alternation++;
-    } else if (alternation % 4 == 2) {
-      eventSpielfigur(spieler3, zahl);
-      currentplayer("Gelb");
-      console.log("Spieler Gelb ist an der Reihe");
-      alternation++;
-    } else if (alternation % 4 == 3) {
-      eventSpielfigur(spieler4, zahl);
-      currentplayer("Rot");
-      console.log("Spieler Rot ist an der Reihe");
-      alternation++;
-    }
-  }*/
 }
 function getcurrentcolor() {
   //alternierendes hinzufügen der Funktion eventSpielfigur
@@ -529,6 +446,8 @@ diceinfo.textContent = "Aktuell gewürfelte Zahl: ";
 
 currentplayer_target.appendChild(currentheader);
 currentplayer_target.appendChild(currenttext);
+currentplayer_target.appendChild(gameinfo);
+currentplayer_target.appendChild(diceinfo);
 
 let sidebar = document.getElementById("sidebar");
 function currentplayer(playercolor) {
