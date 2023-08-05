@@ -54,9 +54,7 @@ gamestart_btn.addEventListener("click", () => {
     endFeld3 = createZiel3();
     endFeld4 = createZiel4();
     zugrichtung = createArray(); //global scope
-    console.log("Spieleranzahl:" + selected_players);
     spielerhinzufuegen(selected_players);
-    console.log(spieler1[2].zielFeld[2].id);
   }
 });
 window.addEventListener("popstate", (event) => {
@@ -475,48 +473,127 @@ function eventSpielfigur(spieler, zahl) {
   return new Promise((resolve) => {
     const controller = new AbortController();
     const { signal } = controller;
+    if(gültigerMove(zahl,spieler[0],spieler)==false && gültigerMove(zahl,spieler[1],spieler)==false &&
+     gültigerMove(zahl,spieler[2],spieler)==false && gültigerMove(zahl,spieler[3],spieler)==false){
+      controller.abort();
+      resolve();
+    }
     for (let i = 0; i < 4; i++) {
       spieler[i].addEventListener(
         "click",
         () => {
-          console.log("Hi"); //hier prüfen ob die bewegung überhaupt möglich
-          movement(zahl, spieler[i], spieler);
+          if(gültigerMove(zahl,spieler[i],spieler)==true){
+            movement(zahl, spieler[i], spieler);
           controller.abort();
           resolve();
+          }
         },
         { signal }
       );
     }
   });
 }
-async function gültigerMove(zahl, figur, spieler) {
+function gültigerMove(zahl, figur, spieler){  //Prüfung auf gültigen Spielzug
+  if(figur.home && zahl!=6){  //bei späterer Abfrage hinzufügen
+    return false;
+  }
   let endziel = figur.momentanePos + zahl;
-  if (endziel < 40) {
+  console.log("endziel"+endziel);
+  if(endziel>39){
+    endziel=endziel-40;
+  }
+  if (figur.counter+zahl < 40) {
     let finalRow = zugrichtung[endziel].style.gridRow;
     let finalColumn = zugrichtung[endziel].style.gridColumn;
     for (let i = 0; i < 4; i++) {
-      if (
-        finalRow == spieler1[i].style.gridRow &&
-        finalColumn == spieler1[i].style.gridColumn
+      if (finalRow == spieler1[i].style.gridRow && finalColumn == spieler1[i].style.gridColumn) {
+        if(figur.style.backgroundColor==spieler1[i].style.backgroundColor){
+            console.log("trueBlau"+i);
+            return false;
+        }
+      } else if (finalRow == spieler2[i].style.gridRow && finalColumn == spieler2[i].style.gridColumn
       ) {
+        if(figur.style.backgroundColor==spieler2[i].style.backgroundColor){
+          console.log("trueGrün"+i);
+          return false;
+      }
+        
+      } else if (selected_players == 3 || selected_players == 4) {
+        if (finalRow == spieler3[i].style.gridRow && finalColumn == spieler3[i].style.gridColumn) {
+          if(figur.style.backgroundColor==spieler3[i].style.backgroundColor){
+            return false;
+        } 
+        }
+      } else if (selected_players == 4) {
+        if (finalRow == spieler4[i].style.gridRow && finalColumn == spieler4[i].style.gridColumn) {
+          if(figur.style.backgroundColor==spieler4[i].style.backgroundColor){
+            return false;
+        } 
+        }
+      }
+    }
+  } else if(figur.counter+zahl>39 && figur.counter+zahl<44){
+    console.log(figur.counter+ zahl - 40);
+    let finalRow = figur.zielFeld[figur.counter+ zahl - 40].style.gridRow;
+    let finalColumn = figur.zielFeld[figur.counter+ zahl - 40].style.gridColumn;
+    for (let i = 0; i < 4; i++) {
+      if (finalRow == spieler1[i].style.gridRow && finalColumn == spieler1[i].style.gridColumn) {
+        if(figur.style.backgroundColor==spieler1[i].style.backgroundColor){
+            console.log("trueBlau"+i);
+            return false;
+        }
+        console.log("spaghetti");
+      } else if (finalRow == spieler2[i].style.gridRow && finalColumn == spieler2[i].style.gridColumn
+      ) {
+        if(figur.style.backgroundColor==spieler2[i].style.backgroundColor){
+          console.log("trueGrün"+i);
+          return false;
+      }
+        
+      } else if (selected_players == 3 || selected_players == 4) {
+        if (finalRow == spieler3[i].style.gridRow && finalColumn == spieler3[i].style.gridColumn) {
+          if(figur.style.backgroundColor==spieler3[i].style.backgroundColor){
+            return false;
+        } 
+        }
+      } else if (selected_players == 4) {
+        if (finalRow == spieler4[i].style.gridRow && finalColumn == spieler4[i].style.gridColumn) {
+          if(figur.style.backgroundColor==spieler4[i].style.backgroundColor){
+            return false;
+        } 
+        }
+      }
+    }
+  } else if(figur.counter+zahl>43){
+    return false;
+  }
+
+  console.log("true");
+  return true;
+}
+
+async function kollision(zahl, figur, spieler) { //sollte umbenannt werden in Kollision
+  let endziel = figur.momentanePos + zahl;
+  if(endziel>39){
+    endziel=endziel-40;
+  }
+  if (figur.counter < 40) {
+    let finalRow = zugrichtung[endziel].style.gridRow;
+    let finalColumn = zugrichtung[endziel].style.gridColumn;
+    for (let i = 0; i < 4; i++) {
+      if (finalRow == spieler1[i].style.gridRow && finalColumn == spieler1[i].style.gridColumn) {
+        
         console.log("Ich schlage deine Blaue Figur");
         schlageFigur(zahl, spieler1[i]);
-      } else if (
-        finalRow == spieler2[i].style.gridRow &&
-        finalColumn == spieler2[i].style.gridColumn
+      } else if (finalRow == spieler2[i].style.gridRow && finalColumn == spieler2[i].style.gridColumn
       ) {
         console.log("Ich schlage deine Grüne Figur");
         schlageFigur(zahl, spieler2[i]);
       } else if (selected_players == 3 || selected_players == 4) {
         //out of bounds Fehler verhindern
-        if (
-          finalRow == spieler3[i].style.gridRow &&
-          finalColumn == spieler3[i].style.gridColumn
-        ) {
+        if (finalRow == spieler3[i].style.gridRow && finalColumn == spieler3[i].style.gridColumn) {
           console.log("Ich schlage deine Gelbe Figur");
-          await delay(zahl * 180);
-          spieler3[i].style.gridRow = spieler3[i].startRow;
-          spieler3[i].style.gridColumn = spieler3[i].startColumn;
+          schlageFigur(zahl, spieler3[i]);
         }
       } else if (selected_players == 4) {
         //out of bounds Fehler verhindern
@@ -525,16 +602,14 @@ async function gültigerMove(zahl, figur, spieler) {
           finalColumn == spieler4[i].style.gridColumn
         ) {
           console.log("Ich schlage deine Rote Figur");
-          await delay(zahl * 200);
-          spieler4[i].style.gridRow = spieler4[i].startRow;
-          spieler4[i].style.gridColumn = spieler4[i].startColumn;
+          schlageFigur(zahl, spieler4[i]);
         }
       }
     }
   }
 }
 async function schlageFigur(zahl, spielfigur) {
-  await delay(zahl * 200);
+  await delay(zahl * 100);
   spielfigur.style.gridRow = spielfigur.startRow;
   spielfigur.style.gridColumn = spielfigur.startColumn;
   spielfigur.counter = 0;
@@ -542,8 +617,10 @@ async function schlageFigur(zahl, spielfigur) {
   spielfigur.momentanePos = spielfigur.start;
 }
 async function movement(zahl, figur, spieler) {
-  if (!figur.home) {
-    gültigerMove(zahl, figur, spieler);
+  if(!figur.home){
+    kollision(zahl, figur, spieler);
+  } else{
+    kollision(0, figur, spieler);
   }
   if (figur.home && zahl == 6) {
     var occupied = false;
@@ -576,8 +653,7 @@ async function movement(zahl, figur, spieler) {
       } else if (figur.counter < 44 && figur.counter > 39) {
         figur.zielErreicht = true;
         figur.style.gridRow = figur.zielFeld[figur.counter - 40].style.gridRow;
-        figur.style.gridColumn =
-          figur.zielFeld[figur.counter - 40].style.gridColumn;
+        figur.style.gridColumn = figur.zielFeld[figur.counter - 40].style.gridColumn;
         await delay(100);
       }
     }
