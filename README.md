@@ -11,3 +11,5 @@ Step by Step Anleitung für das Projekt „Mensch Ärger dich nicht“
 6.	Die Bewegung der Spielfiguren erfolgt durch einen Klick auf die jeweilige Spielfigur
 
 Hinweis: Falls sie den virtuellen Würfel zu Beginn benutzen und keine 6 gewürfelt wird, springt das Programm automatisch zum nächsten Spieler, da keine Bewegung möglich ist. Falls sie manuell das Würfelergebnis eingeben geschieht das Gleiche.
+
+Während des Projekts haben wir die HTML, CSS und JS-Datei einzeln bearbeitet. Zur einfacheren Handhabung haben wir alles in eine HTML-Datei zusammengefasst.
